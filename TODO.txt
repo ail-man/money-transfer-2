@@ -1,0 +1,3 @@
+- Account <*---1> Customer
+- Embedded PostgreSQL
+-

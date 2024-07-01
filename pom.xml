@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.ail.home.transfer</groupId>
+	<artifactId>money-transfer</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Money Transfer</name>
+	<description>Money Transfer Service V2</description>
+
+	<scm>
+		<connection>scm:git:git@github.com:ail-man/money-transfer-2.git</connection>
+		<developerConnection>scm:git:git@github.com:ail-man/money-transfer-2.git</developerConnection>
+		<url>https://github.com/ail-man/money-transfer-2</url>
+	</scm>
+
+	<properties>
+		<java.version>21</java.version>
+		<spring-boot.version>3.2.5</spring-boot.version>
+		<!-- Main -->
+		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
+		<docker-maven-plugin.version>0.44.0</docker-maven-plugin.version>
+		<findbugs-annotations.version>3.0.1</findbugs-annotations.version>
+		<guava.version>33.1.0-jre</guava.version>
+		<testng.version>7.10.1</testng.version>
+		<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
+		<jacoco-plugin.skip>true</jacoco-plugin.skip>
+		<!-- Database & Migration -->
+		<postgres-driver.version>42.7.2</postgres-driver.version>
+		<liquibase-core.version>4.26.0</liquibase-core.version>
+		<!-- QueryDSL -->
+		<querydsl.version>5.1.0</querydsl.version>
+		<querydsl.plugin.version>1.1.3</querydsl.plugin.version>
+		<!-- JPA -->
+		<io.hypersistence.version>3.7.5</io.hypersistence.version>
+		<!-- gRPC & Protobuf -->
+		<io.grpc.version>1.62.2</io.grpc.version>
+		<proto-google-common-protos.version>2.36.0</proto-google-common-protos.version>
+		<protobuf-spi-impl.version>1.44</protobuf-spi-impl.version>
+		<!-- Kafka Support -->
+		<confluent.platform.version>7.6.0</confluent.platform.version>
+		<!-- External APIs SDKs -->
+		<google.cloud.version>26.33.0</google.cloud.version>
+		<microsoft-graph.version>5.15.0</microsoft-graph.version>
+		<azure-identity.version>1.11.3</azure-identity.version>
+		<org.apache.poi.version>5.2.5</org.apache.poi.version>
+		<commons-validator.version>1.8.0</commons-validator.version>
+		<org.apache.commons-compress.version>1.26.1</org.apache.commons-compress.version>
+		<org.apache.commons-beanutils-core.version>1.8.3</org.apache.commons-beanutils-core.version>
+		<sentry.version>7.5.0</sentry.version>
+		<!-- Utility -->
+		<git.commit.id.maven.plugin.version>8.0.2</git.commit.id.maven.plugin.version>
+		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
+		<org.apache.httpcomponents.version>5.3.1</org.apache.httpcomponents.version>
+		<!-- Test Support -->
+		<test-framework-util.version>1.123.0</test-framework-util.version>
+		<postgres-test-containers-version>1.19.8</postgres-test-containers-version>
+		<!-- Parent/Project Flags -->
+		<jacoco-plugin.skip>false</jacoco-plugin.skip>
+	</properties>
+
+	<dependencies>
+
+		<!-- Spring Web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- Spring Actuator -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<!-- Spring AOP -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<!-- Spring Cache -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
+		<!-- Spring Data JPA -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- Spring Validation API -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${commons-validator.version}</version>
+		</dependency>
+
+		<!-- Database -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgres-driver.version}</version>
+		</dependency>
+
+		<!-- DB Migration -->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>${liquibase-core.version}</version>
+		</dependency>
+
+		<!-- QueryDSL -->
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydsl.version}</version>
+			<classifier>jakarta</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>com.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydsl.version}</version>
+			<classifier>jakarta</classifier>
+		</dependency>
+
+		<!-- JPA -->
+		<dependency>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-utils-hibernate-63</artifactId>
+			<version>${io.hypersistence.version}</version>
+		</dependency>
+
+		<!-- Metrics -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- DevTools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!--  Utility  -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils-core</artifactId>
+			<version>${org.apache.commons-beanutils-core.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>${org.apache.commons-compress.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents.client5</groupId>
+			<artifactId>httpclient5</artifactId>
+			<version>${org.apache.httpcomponents.version}</version>
+		</dependency>
+
+		<!-- Test Support -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgres-test-containers-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Additionally -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>findbugs-annotations</artifactId>
+			<version>${findbugs-annotations.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Test dependencies from Spring Boot - set scope -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test-autoconfigure</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>${querydsl.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+				<!-- Add Build Information to the Actuator Info endpoint -->
+				<!-- See https://docs.spring.io/spring-boot/docs/2.4.1/reference/htmlsingle/#howto-build-info -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>no.entur.mapstruct.spi</groupId>
+							<artifactId>protobuf-spi-impl</artifactId>
+							<version>${protobuf-spi-impl.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>${lombok.mapstruct.binding.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<!-- Add Git Information to the Actuator Info endpoint -->
+			<!-- See https://docs.spring.io/spring-boot/docs/3.0.0/reference/htmlsingle/#howto.build.generate-git-info -->
+			<plugin>
+				<groupId>io.github.git-commit-id</groupId>
+				<artifactId>git-commit-id-maven-plugin</artifactId>
+				<version>${git.commit.id.maven.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<abbrevLength>8</abbrevLength>
+					<verbose>true</verbose>
+				</configuration>
+			</plugin>
+			<!-- JaCoCo Test Coverage -->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<dataFile>${project.build.directory}/aggregate.exec</dataFile>
+							<rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.80</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<skip>${jacoco-plugin.skip}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-prepare-agent-integration</id>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>default-report</id>
+						<goals>
+							<goal>report</goal>
+							<goal>report-integration</goal>
+						</goals>
+						<phase>verify</phase>
+					</execution>
+					<execution>
+						<id>default-merge</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>merge</goal>
+						</goals>
+						<configuration>
+							<fileSets>
+								<fileSet>
+									<directory>${project.build.directory}</directory>
+									<includes>
+										<include>*.exec</include>
+									</includes>
+								</fileSet>
+							</fileSets>
+							<destFile>${project.build.directory}/aggregate.exec</destFile>
+						</configuration>
+					</execution>
+					<execution>
+						<id>default-merge-report</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
+							<dataFile>${project.build.directory}/aggregate.exec</dataFile>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*$*</exclude>
+						<exclude>**/*IT</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>com.google.code.findbugs</groupId>
+							<artifactId>findbugs-annotations</artifactId>
+						</exclude>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+						<exclude>
+							<groupId>org.springframework.boot</groupId>
+							<artifactId>spring-boot-configuration-processor</artifactId>
+						</exclude>
+					</excludes>
+					<skip>${spring-boot.repackage.skip}</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*IT</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<!-- Enforce correct value of "spring-boot.version" -->
+			<plugin>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-spring-boot-version-property</id>
+						<inherited>false</inherited>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<!-- enforce major version "3" to avoid version number clashes -->
+								<requireProperty>
+									<property>spring-boot.version</property>
+									<regex>3\..+</regex>
+									<regexMessage>"spring-boot.version" must start with "3."</regexMessage>
+								</requireProperty>
+								<!-- both directions are needed because we have only "regex" comparison and version numbers contain dots -->
+								<requireProperty>
+									<property>spring-boot.version</property>
+									<regex>${project.parent.version}</regex>
+									<regexMessage>"spring-boot.version" does not match parent version</regexMessage>
+								</requireProperty>
+								<requireProperty>
+									<property>project.parent.version</property>
+									<regex>${spring-boot.version}</regex>
+									<regexMessage>parent version does not match "spring-boot.version"</regexMessage>
+								</requireProperty>
+							</rules>
+						</configuration>
+					</execution>
+					<execution>
+						<id>enforce-log4j-core-version-log4shell</id>
+						<inherited>true</inherited>
+						<phase>validate</phase>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<bannedDependencies>
+									<excludes>
+										<exclude>org.apache.logging.log4j:log4j-core:(,2.16.0)</exclude>
+									</excludes>
+								</bannedDependencies>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco-maven-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>io.github.git-commit-id</groupId>
+					<artifactId>git-commit-id-maven-plugin</artifactId>
+				</plugin>
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>${docker-maven-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>coverage</id>
+			<properties>
+				<jacoco-plugin.skip>false</jacoco-plugin.skip>
+			</properties>
+		</profile>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<failOnError>false</failOnError>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-deploy-plugin</artifactId>
+						<inherited>false</inherited>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>docker-deployment</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<file>
+					<exists>${basedir}/Dockerfile</exists>
+				</file>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>io.github.git-commit-id</groupId>
+						<artifactId>git-commit-id-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>get-the-git-infos</id>
+								<goals>
+									<goal>revision</goal>
+								</goals>
+								<phase>initialize</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+							<generateGitPropertiesFile>true</generateGitPropertiesFile>
+							<abbrevLength>8</abbrevLength>
+							<verbose>true</verbose>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>io.fabric8</groupId>
+						<artifactId>docker-maven-plugin</artifactId>
+						<configuration>
+							<imagePullPolicy>always</imagePullPolicy>
+							<images>
+								<image>
+									<name>${env.DOCKER_REGISTRY_URL_PUSH_1}/${project.artifactId}</name>
+									<build>
+										<tags>
+											<tag>${project.version}-${git.commit.id}</tag>
+										</tags>
+										<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+										<contextDir>${project.basedir}</contextDir>
+										<args>
+											<JAR_FILE>target/${project.artifactId}-${project.version}.jar</JAR_FILE>
+										</args>
+									</build>
+								</image>
+								<image>
+									<name>${env.DOCKER_REGISTRY_URL_PUSH_2}/${project.artifactId}</name>
+									<build>
+										<tags>
+											<tag>${project.version}-${git.commit.id}</tag>
+										</tags>
+										<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+										<contextDir>${project.basedir}</contextDir>
+										<args>
+											<JAR_FILE>target/${project.artifactId}-${project.version}.jar</JAR_FILE>
+										</args>
+									</build>
+								</image>
+							</images>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>deploy</phase>
+								<goals>
+									<goal>build</goal>
+									<goal>push</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
