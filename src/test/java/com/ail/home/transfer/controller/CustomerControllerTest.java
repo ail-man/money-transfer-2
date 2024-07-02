@@ -20,7 +20,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -44,10 +44,10 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 	private static final String PARAM_LIMIT = "limit";
 	private static final String PARAM_OFFSET = "offset";
 
-	@Autowired
+	@SpyBean
 	private CustomerRepoDsl customerRepoDsl;
 
-	@Autowired
+	@SpyBean
 	private CustomerHistoryRepoDsl customerHistoryRepoDsl;
 
 	@BeforeAll

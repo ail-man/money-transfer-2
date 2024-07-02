@@ -50,12 +50,15 @@ public class TransactionService {
 		final BigDecimal fromBalance = fromAccount.getBalance();
 		final BigDecimal toBalance = toAccount.getBalance();
 
-		// Allow negative balance
-		final BigDecimal resultFromBalance = fromBalance.subtract(transactionAmount);
-		final BigDecimal resultToBalance = toBalance.add(transactionAmount);
+		// Allowing negative balance
 
+		final BigDecimal resultFromBalance = fromBalance.subtract(transactionAmount);
 		fromAccount.setBalance(resultFromBalance);
-		fromAccount.setBalance(resultToBalance);
+		fromAccount.setUpdatedAt(timestamp);
+
+		final BigDecimal resultToBalance = toBalance.add(transactionAmount);
+		toAccount.setBalance(resultToBalance);
+		toAccount.setUpdatedAt(timestamp);
 
 		final Transaction createdTransaction = transactionRepoDsl.getRepo().saveAndFlush(transaction);
 		accountRepoDsl.getRepo().saveAndFlush(fromAccount);

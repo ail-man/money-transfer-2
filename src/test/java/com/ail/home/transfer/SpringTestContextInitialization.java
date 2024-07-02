@@ -11,8 +11,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestOperations;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ail.home.transfer.service.JsonSerializationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.Getter;
 
@@ -26,7 +26,7 @@ public class SpringTestContextInitialization {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
+	@SpyBean
 	private ObjectMapper mapper;
 
 	@SpyBean

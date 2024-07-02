@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ControllerTestUtils {
 
-
 	public static UriComponentsBuilder defaultUriBuilder(final String path) {
 		return UriComponentsBuilder.fromUriString(path);
 	}

@@ -1,10 +1,5 @@
-- Test Create Transaction API
+- Test Create Transaction API corner cases with different currencies
+- Update Account API (customerId, enabled, expiresAt, info)
 - Search Transaction API
-- TDD with integration tests:
-	- create two new customers
-	- crete accounts for them
-	- transfer money between them
-	- Transfer an Account to another Customer (update)
-	- Account top-up
-	- Account withdraw
+- Transfer an Account to another Customer (update)
 - Docker Compose with PostgreSQL
