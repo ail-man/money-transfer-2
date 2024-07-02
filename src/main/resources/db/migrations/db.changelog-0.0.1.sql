@@ -64,3 +64,17 @@ CREATE TABLE "accounts_history"
   CONSTRAINT "accounts_history_to_accounts_fk" FOREIGN KEY ("id") REFERENCES "accounts" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT "accounts_history_to_customers_fk" FOREIGN KEY ("customer_id") REFERENCES "customers" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+
+-- changeset artur:0.0.1_5 runOnChange:false failOnError:true labels:create_transactions_table
+CREATE TABLE "transactions"
+(
+  "id"              UUID                        NOT NULL,
+  "timestamp"       TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+  "from_account_id" UUID                        NOT NULL,
+  "to_account_id"   UUID                        NOT NULL,
+  "amount"          NUMERIC DEFAULT 0           NOT NULL,
+  "currency"        CHAR(3)                     NOT NULL,
+  CONSTRAINT "transactions_pk" PRIMARY KEY ("id"),
+  CONSTRAINT "transaction_from_account_fk" FOREIGN KEY ("from_account_id") REFERENCES "accounts" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "transaction_to_account_fk" FOREIGN KEY ("to_account_id") REFERENCES "accounts" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
+);

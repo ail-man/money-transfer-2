@@ -1,6 +1,7 @@
 [
   {
     "id": "2492ed49-d04f-43a0-a40e-276ae82191ff",
+    "customerId": "aa69e678-b866-471f-80c2-91a42da4bd6f",
     "enabled": true,
     "createdAt": "2024-07-01T04:33:04.328Z",
     "updatedAt": "2024-08-01T04:33:04.328Z",
@@ -13,6 +14,7 @@
   },
   {
     "id": "cf255190-0474-471c-8530-8a5162bc7a54",
+    "customerId": "aa69e678-b866-471f-80c2-91a42da4bd6f",
     "enabled": true,
     "createdAt": "2024-07-02T04:33:04.328Z",
     "updatedAt": "2024-08-01T04:33:04.328Z",
@@ -25,6 +27,7 @@
   },
   {
     "id": "71367d92-2d45-402b-8984-f6481ac98689",
+    "customerId": "9d537a44-82df-4d0e-bdfb-7d36b9772f6b",
     "enabled": false,
     "createdAt": "2024-07-03T04:33:04.328Z",
     "updatedAt": "2024-08-03T04:33:04.328Z",

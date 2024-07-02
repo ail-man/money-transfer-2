@@ -20,9 +20,9 @@ import lombok.ToString;
 public abstract class AccountBase extends EntityBase {
 
 	@Column(name = "enabled", nullable = false)
-	private Boolean enabled = false;
+	private boolean enabled;
 
-	@Column(name = "expires_at")
+	@Column(name = "expires_at", nullable = false)
 	private LocalDateTime expiresAt;
 
 	@Type(JsonType.class)

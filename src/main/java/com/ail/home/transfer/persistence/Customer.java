@@ -33,7 +33,7 @@ public class Customer extends CustomerBase {
 	private UUID id;
 
 	@Version
-	private Integer version;
+	private int version;
 
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
 	private List<Account> accounts = new ArrayList<>();

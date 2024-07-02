@@ -18,7 +18,7 @@ import lombok.ToString;
 public abstract class CustomerBase extends EntityBase {
 
 	@Column(name = "enabled", nullable = false)
-	private Boolean enabled = false;
+	private boolean enabled;
 
 	@Type(JsonType.class)
 	@Column(name = "info")
