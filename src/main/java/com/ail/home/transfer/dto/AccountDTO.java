@@ -1,5 +1,6 @@
 package com.ail.home.transfer.dto;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -22,6 +23,8 @@ public class AccountDTO {
 	private UUID id;
 	private Integer version;
 	private Boolean enabled;
+	private BigInteger balance;
+	private String currency;
 	private AccountInfo info;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;

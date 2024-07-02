@@ -1,5 +1,6 @@
 package com.ail.home.transfer.persistence;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcType;
@@ -30,6 +31,12 @@ public class Account extends AccountBase {
 
 	@Version
 	private Integer version;
+
+	@Column(name = "balance", nullable = false)
+	private BigDecimal balance;
+
+	@Column(name = "currency", nullable = false)
+	private String currency;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private Customer customer;

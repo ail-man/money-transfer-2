@@ -17,5 +17,4 @@ import lombok.ToString;
 public class AccountInfo {
 
 	private String iban;
-	private String currency;
 }

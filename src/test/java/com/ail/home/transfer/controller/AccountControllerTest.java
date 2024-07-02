@@ -59,12 +59,12 @@ class AccountControllerTest extends SpringTestContextInitialization {
 		// records are initialized in such way that we can simplify testing by comparing the amount of returning records
 		final InputStream customersSrc = CustomerControllerTest.class.getResourceAsStream("/database/test_customers.json");
 		final List<Customer> customers = getMapper().readValue(customersSrc, new TypeReference<>() { });
-		customerRepoDsl.getRepo().saveAllAndFlush(customers);
+		final List<Customer> savedCustomers = customerRepoDsl.getRepo().saveAllAndFlush(customers);
 		final InputStream accountsSrc = AccountControllerTest.class.getResourceAsStream("/database/test_accounts.json");
 		final List<Account> accounts = getMapper().readValue(accountsSrc, new TypeReference<>() { });
-		accounts.get(0).setCustomer(customers.get(0));
-		accounts.get(1).setCustomer(customers.get(0));
-		accounts.get(2).setCustomer(customers.get(1));
+		accounts.get(0).setCustomer(savedCustomers.get(0));
+		accounts.get(1).setCustomer(savedCustomers.get(0));
+		accounts.get(2).setCustomer(savedCustomers.get(1));
 		accountRepoDsl.getRepo().saveAllAndFlush(accounts);
 	}
 

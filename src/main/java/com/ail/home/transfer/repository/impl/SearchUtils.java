@@ -96,11 +96,13 @@ public final class SearchUtils {
 		return predicate;
 	}
 
+	// TODO check SQL injections
 	public static BooleanTemplate buildJsonbEqualityExpression(final Path<?> jsonbPath, final String searchKey, final String value) {
 		final String[] jsonKeys = searchKey.split("\\.");
 		return Expressions.booleanTemplate("jsonb_path_equals_func({0}, {1}, {2})", jsonbPath, jsonKeys, value);
 	}
 
+	// TODO check SQL injections
 	public static BooleanTemplate buildJsonbInExpression(final Path<?> jsonbPath, final String searchKey, final List<String> value) {
 		final String[] jsonKeys = searchKey.split("\\.");
 		// Convert the list to an array format that QueryDSL can handle
