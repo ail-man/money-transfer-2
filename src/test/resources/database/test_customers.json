@@ -2,8 +2,8 @@
   {
     "id": "aa69e678-b866-471f-80c2-91a42da4bd6f",
     "enabled": true,
-    "created_at": "2024-07-01T04:33:04.328Z",
-    "updated_at": "2024-07-02T04:33:04.328Z",
+    "createdAt": "2024-07-01T04:33:04.328Z",
+    "updatedAt": "2024-07-02T04:33:04.328Z",
     "info": {
       "email": "test1@com.com",
       "phone": "0123456789",
@@ -14,8 +14,8 @@
   {
     "id": "9d537a44-82df-4d0e-bdfb-7d36b9772f6b",
     "enabled": true,
-    "created_at": "2024-07-01T04:33:04.328Z",
-    "updated_at": "2024-07-02T04:33:04.328Z",
+    "createdAt": "2024-07-01T04:33:04.328Z",
+    "updatedAt": "2024-07-02T04:33:04.328Z",
     "info": {
       "email": "test2@de.de",
       "phone": "9876543210",
@@ -26,8 +26,8 @@
   {
     "id": "f7309de5-5312-4bee-9160-903cc51085bb",
     "enabled": false,
-    "created_at": "2024-07-01T04:33:04.328Z",
-    "updated_at": "2024-07-02T04:33:04.328Z",
+    "createdAt": "2024-07-01T04:33:04.328Z",
+    "updatedAt": "2024-07-02T04:33:04.328Z",
     "info": {
       "email": "test3@org.org",
       "phone": "1122334455",
