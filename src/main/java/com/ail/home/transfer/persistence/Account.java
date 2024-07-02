@@ -21,8 +21,8 @@ import lombok.ToString;
 @Entity(name = "accounts")
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = { "customer" })
+@ToString(callSuper = true, exclude = { "customer" })
 public class Account extends AccountBase {
 
 	@Id

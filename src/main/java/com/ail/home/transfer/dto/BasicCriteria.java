@@ -5,9 +5,6 @@ import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Positive;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +13,10 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class BasicCriteria {
+public class BasicCriteria extends PageCriteria {
 
 	public static final long DEFAULT_LIMIT = 20;
 
@@ -34,14 +31,4 @@ public class BasicCriteria {
 
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime createdTo; // optional, inclusive
-
-	// Pagination
-
-	@Positive
-	private Long offset; // optional
-
-	@Min(1)
-	@Max(1000)
-	private Long limit; // optional
-
 }

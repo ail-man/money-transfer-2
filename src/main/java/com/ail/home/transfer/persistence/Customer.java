@@ -23,8 +23,8 @@ import lombok.ToString;
 @Entity(name = "customers")
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = { "accounts" })
+@ToString(callSuper = true, exclude = { "accounts" })
 public class Customer extends CustomerBase {
 
 	@Id

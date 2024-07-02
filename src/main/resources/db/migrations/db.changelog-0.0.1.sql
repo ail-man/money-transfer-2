@@ -18,6 +18,7 @@ CREATE TABLE "customers"
 );
 
 -- changeset artur:0.0.1_2 runOnChange:false failOnError:true labels:create_customers_history_table
+BEGIN;
 CREATE TABLE "customers_history"
 (
   "id"         UUID                        NOT NULL,
@@ -29,8 +30,11 @@ CREATE TABLE "customers_history"
   CONSTRAINT "customers_history_pk" PRIMARY KEY ("id", "version"),
   CONSTRAINT "customers_history_to_customers_fk" FOREIGN KEY ("id") REFERENCES "customers" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+CREATE INDEX customers_history_id_idx ON customers_history (id);
+COMMIT;
 
 -- changeset artur:0.0.1_3 runOnChange:false failOnError:true labels:create_accounts_table
+BEGIN;
 CREATE TABLE "accounts"
 (
   "id"          UUID                        NOT NULL,
@@ -46,8 +50,11 @@ CREATE TABLE "accounts"
   CONSTRAINT "accounts_pk" PRIMARY KEY ("id"),
   CONSTRAINT "accounts_to_customers_fk" FOREIGN KEY ("customer_id") REFERENCES "customers" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+CREATE INDEX accounts_customer_id_idx ON accounts (customer_id);
+COMMIT;
 
 -- changeset artur:0.0.1_4 runOnChange:false failOnError:true labels:create_accounts_history_table
+BEGIN;
 CREATE TABLE "accounts_history"
 (
   "id"          UUID                        NOT NULL,
@@ -64,8 +71,11 @@ CREATE TABLE "accounts_history"
   CONSTRAINT "accounts_history_to_accounts_fk" FOREIGN KEY ("id") REFERENCES "accounts" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT "accounts_history_to_customers_fk" FOREIGN KEY ("customer_id") REFERENCES "customers" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+CREATE INDEX accounts_history_id_idx ON customers_history (id);
+COMMIT;
 
 -- changeset artur:0.0.1_5 runOnChange:false failOnError:true labels:create_transactions_table
+BEGIN;
 CREATE TABLE "transactions"
 (
   "id"              UUID                        NOT NULL,
@@ -78,3 +88,6 @@ CREATE TABLE "transactions"
   CONSTRAINT "transaction_from_account_fk" FOREIGN KEY ("from_account_id") REFERENCES "accounts" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT "transaction_to_account_fk" FOREIGN KEY ("to_account_id") REFERENCES "accounts" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );
+CREATE INDEX transactions_from_account_id_idx ON transactions (from_account_id);
+CREATE INDEX transactions_to_account_id_idx ON transactions (to_account_id);
+COMMIT;

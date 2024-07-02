@@ -21,6 +21,7 @@ import lombok.ToString;
 public class AccountDTO {
 
 	private UUID id;
+	private UUID customerId;
 	private Integer version;
 	private Boolean enabled;
 	private BigInteger balance;

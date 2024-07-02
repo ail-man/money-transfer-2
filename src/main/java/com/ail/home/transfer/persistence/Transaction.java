@@ -21,8 +21,8 @@ import lombok.ToString;
 @Entity(name = "transactions")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = { "fromAccount", "toAccount" })
+@ToString(exclude = { "fromAccount", "toAccount" })
 public class Transaction {
 
 	@Id

@@ -1,3 +1,6 @@
+- Search account by customer_id
+- Create Account API
+- Transaction API
 - TDD with integration tests:
 	- create two new customers
 	- crete accounts for them
