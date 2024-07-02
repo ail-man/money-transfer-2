@@ -1,5 +1,7 @@
 package com.ail.home.transfer.controller;
 
+import static com.ail.home.transfer.controller.ControllerTestUtils.defaultUriBuilder;
+import static com.ail.home.transfer.controller.ControllerTestUtils.getLinkFromHeader;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -7,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ail.home.transfer.SpringTestContextInitialization;
 import com.ail.home.transfer.dto.AccountDTO;
@@ -78,7 +78,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 	void testHeaderXTotalCount() throws Exception {
 		URI uri;
 
-		uri = defaultUriBuilder()
+		uri = defaultUriBuilder(ACCOUNTS_PATH)
 			.build()
 			.toUri();
 
@@ -86,7 +86,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 			.andExpect(status().isOk())
 			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"));
 
-		uri = defaultUriBuilder()
+		uri = defaultUriBuilder(ACCOUNTS_PATH)
 			.queryParam(PARAM_ENABLED, "true")
 			.build()
 			.toUri();
@@ -98,7 +98,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 
 	@Test
 	void testLimitFilterAndOffsetFilterAndLinkHeader() throws Exception {
-		final URI uri = defaultUriBuilder()
+		final URI uri = defaultUriBuilder(ACCOUNTS_PATH)
 			.queryParam(PARAM_LIMIT, 2)
 			.build()
 			.toUri();
@@ -110,7 +110,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 			.andReturn()
 			.getResponse();
 
-		final URI nextUri = getLinkFromHeader(servletResponse);
+		final URI nextUri = getLinkFromHeader(servletResponse, ACCOUNTS_PATH);
 		assertThat(nextUri)
 			.hasParameter(PARAM_LIMIT, "2")
 			.hasParameter(PARAM_OFFSET, "2");
@@ -123,7 +123,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 
 	@Test
 	void testEmailFilter() throws Exception {
-		final URI uri = defaultUriBuilder()
+		final URI uri = defaultUriBuilder(ACCOUNTS_PATH)
 			.queryParam(PARAM_IBAN, "US02120300000000202051")
 			.build()
 			.toUri();
@@ -145,7 +145,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 
 	@Test
 	void testCurrencyFilter() throws Exception {
-		URI uri = defaultUriBuilder()
+		URI uri = defaultUriBuilder(ACCOUNTS_PATH)
 			.queryParam(PARAM_CURRENCY, "USD", "EUR")
 			.build()
 			.toUri();
@@ -161,7 +161,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 		List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
 		assertThat(accounts).hasSize(3);
 
-		uri = defaultUriBuilder()
+		uri = defaultUriBuilder(ACCOUNTS_PATH)
 			.queryParam(PARAM_CURRENCY, "EUR", "CNY")
 			.build()
 			.toUri();
@@ -177,7 +177,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 		accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
 		assertThat(accounts).hasSize(2);
 
-		uri = defaultUriBuilder()
+		uri = defaultUriBuilder(ACCOUNTS_PATH)
 			.queryParam(PARAM_CURRENCY, "USD", "CNY")
 			.build()
 			.toUri();
@@ -196,7 +196,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 
 	@Test
 	void testCustomerIdFilter() throws Exception {
-		final URI uri = defaultUriBuilder()
+		final URI uri = defaultUriBuilder(ACCOUNTS_PATH)
 			.queryParam(PARAM_CUSTOMER_ID, "aa69e678-b866-471f-80c2-91a42da4bd6f")
 			.build()
 			.toUri();
@@ -213,19 +213,5 @@ class AccountControllerTest extends SpringTestContextInitialization {
 		assertThat(accounts).hasSize(2);
 		assertThat(accounts.get(0).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
 		assertThat(accounts.get(1).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
-	}
-
-	private UriComponentsBuilder defaultUriBuilder() {
-		return UriComponentsBuilder.fromUriString(ACCOUNTS_PATH);
-	}
-
-	private URI getLinkFromHeader(final MockHttpServletResponse servletResponse) throws URISyntaxException {
-		// validate URI: <http://localhost/accounts?limit=2&offset=2>; rel=\"next\"
-		final String linkHeaderValue = servletResponse.getHeader(HttpHeaders.LINK);
-		assertThat(linkHeaderValue).isNotBlank();
-		final String link = linkHeaderValue.replaceAll("<|>;\\srel=\"next\"", "");
-		final URI nextUri = new URI(link);
-		assertThat(nextUri).hasPath(ACCOUNTS_PATH);
-		return nextUri;
 	}
 }

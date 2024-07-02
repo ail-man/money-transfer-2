@@ -1,5 +1,7 @@
 package com.ail.home.transfer.controller;
 
+import static com.ail.home.transfer.controller.ControllerTestUtils.defaultUriBuilder;
+import static com.ail.home.transfer.controller.ControllerTestUtils.getLinkFromHeader;
 import static com.ail.home.transfer.utils.Utils.localDateTimeNow;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -10,7 +12,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ail.home.transfer.SpringTestContextInitialization;
 import com.ail.home.transfer.dto.CustomerDTO;
@@ -68,7 +68,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 	void testHeaderXTotalCount() throws Exception {
 		URI uri;
 
-		uri = defaultUriBuilder()
+		uri = defaultUriBuilder(CUSTOMERS_PATH)
 			.build()
 			.toUri();
 
@@ -76,7 +76,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 			.andExpect(status().isOk())
 			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"));
 
-		uri = defaultUriBuilder()
+		uri = defaultUriBuilder(CUSTOMERS_PATH)
 			.queryParam(PARAM_ENABLED, "true")
 			.build()
 			.toUri();
@@ -88,7 +88,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 
 	@Test
 	void testLimitFilterAndOffsetFilterAndLinkHeader() throws Exception {
-		final URI uri = defaultUriBuilder()
+		final URI uri = defaultUriBuilder(CUSTOMERS_PATH)
 			.queryParam(PARAM_LIMIT, 2)
 			.build()
 			.toUri();
@@ -100,7 +100,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 			.andReturn()
 			.getResponse();
 
-		final URI nextUri = getLinkFromHeader(servletResponse);
+		final URI nextUri = getLinkFromHeader(servletResponse, CUSTOMERS_PATH);
 		assertThat(nextUri)
 			.hasParameter(PARAM_LIMIT, "2")
 			.hasParameter(PARAM_OFFSET, "2");
@@ -113,7 +113,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 
 	@Test
 	void testEmailFilter() throws Exception {
-		URI uri = defaultUriBuilder()
+		URI uri = defaultUriBuilder(CUSTOMERS_PATH)
 			.queryParam(PARAM_EMAIL, "test1@com.com")
 			.build()
 			.toUri();
@@ -132,7 +132,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 		assertThat(customer.getId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
 		assertThat(customer.getInfo().getEmail()).isEqualTo("test1@com.com");
 
-		uri = defaultUriBuilder()
+		uri = defaultUriBuilder(CUSTOMERS_PATH)
 			.queryParam(PARAM_EMAIL, "test1@com.com", "test2@de.de")
 			.build()
 			.toUri();
@@ -148,7 +148,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 		customers = getMapper().readValue(responseBody, new TypeReference<>() { });
 		assertThat(customers).hasSize(2);
 
-		uri = defaultUriBuilder()
+		uri = defaultUriBuilder(CUSTOMERS_PATH)
 			.queryParam(PARAM_EMAIL, "test1@com.com", "test2@de.de", "test3@org.org")
 			.build()
 			.toUri();
@@ -179,7 +179,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 			.build();
 		String json = getJsonSerializationService().toJson(customerData);
 
-		final URI uri = defaultUriBuilder()
+		final URI uri = defaultUriBuilder(CUSTOMERS_PATH)
 			.build()
 			.toUri();
 
@@ -249,17 +249,4 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 		assertThat(actualCustomerInfo.getLastName()).isEqualTo(customerInfo.getLastName());
 	}
 
-	private UriComponentsBuilder defaultUriBuilder() {
-		return UriComponentsBuilder.fromUriString(CUSTOMERS_PATH);
-	}
-
-	private URI getLinkFromHeader(final MockHttpServletResponse servletResponse) throws URISyntaxException {
-		// validate URI: <http://localhost/customers?limit=2&offset=2>; rel=\"next\"
-		final String linkHeaderValue = servletResponse.getHeader(HttpHeaders.LINK);
-		assertThat(linkHeaderValue).isNotBlank();
-		final String link = linkHeaderValue.replaceAll("<|>;\\srel=\"next\"", "");
-		final URI nextUri = new URI(link);
-		assertThat(nextUri).hasPath(CUSTOMERS_PATH);
-		return nextUri;
-	}
 }
