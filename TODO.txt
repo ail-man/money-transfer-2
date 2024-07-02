@@ -1,6 +1,12 @@
+- Currency and Balance to Account
+- Move JSONB IN search to Customer
+
+- TDD with integration tests:
+	- create two new customers
+	- crete accounts for them
+	- transfer
+
 * Account <*---1> Customer
-	- Find Customer by Account
-	- Find Customer Accounts
-	- Assign an Account to another Customer
-- Embedded PostgreSQL
--
+	- Create an Account for the customer
+	- Transfer an Account to another Customer (update)
+- Docker Compose with PostgreSQL
