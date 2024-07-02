@@ -24,5 +24,6 @@ public class AccountDTO {
 	private Boolean enabled;
 	private AccountInfo info;
 	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 	private LocalDateTime expiresAt;
 }

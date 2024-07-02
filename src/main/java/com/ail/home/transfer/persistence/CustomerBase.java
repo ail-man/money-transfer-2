@@ -1,7 +1,5 @@
 package com.ail.home.transfer.persistence;
 
-import java.time.LocalDateTime;
-
 import org.hibernate.annotations.Type;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
@@ -19,11 +17,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public abstract class CustomerBase extends EntityBase {
 
-	@Column(name = "enabled")
+	@Column(name = "enabled", nullable = false)
 	private Boolean enabled = false;
-
-	@Column(name = "updated_at", nullable = false)
-	private LocalDateTime updatedAt;
 
 	@Type(JsonType.class)
 	@Column(name = "info")

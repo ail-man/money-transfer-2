@@ -48,6 +48,7 @@ begin
                                   customer_id,
                                   info,
                                   created_at,
+                                  updated_at,
                                   expires_at)
     values (new.id,
             new.version,
@@ -55,6 +56,7 @@ begin
             new.customer_id,
             new.info,
             new.created_at,
+            new.updated_at,
             new.expires_at);
   end if;
   return new;
