@@ -1,5 +1,9 @@
 package com.ail.home.transfer.dto;
 
+import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import com.ail.home.transfer.persistence.AccountInfo;
 
 import jakarta.validation.Valid;
@@ -19,7 +23,11 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AccountData {
 
+	private UUID customerId;
 	private Boolean enabled;
+	private BigInteger balance;
+	private String currency;
 	@Valid
 	private AccountInfo info;
+	private LocalDateTime expiresAt;
 }

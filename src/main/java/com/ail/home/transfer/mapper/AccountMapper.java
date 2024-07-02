@@ -5,6 +5,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
+import com.ail.home.transfer.dto.AccountDTO;
+import com.ail.home.transfer.dto.AccountData;
 import com.ail.home.transfer.persistence.Account;
 
 @Mapper(collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
@@ -13,5 +15,7 @@ import com.ail.home.transfer.persistence.Account;
 	componentModel = "spring")
 public interface AccountMapper extends BaseMapper {
 
-	com.ail.home.transfer.dto.AccountDTO map(Account source);
+	AccountDTO map(Account source);
+
+	Account map(AccountData source);
 }

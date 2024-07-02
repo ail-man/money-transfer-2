@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
+import com.ail.home.transfer.dto.CustomerDTO;
 import com.ail.home.transfer.dto.CustomerData;
 import com.ail.home.transfer.persistence.Customer;
 
@@ -15,7 +16,7 @@ import com.ail.home.transfer.persistence.Customer;
 	componentModel = "spring")
 public interface CustomerMapper extends BaseMapper {
 
-	com.ail.home.transfer.dto.CustomerDTO map(Customer source);
+	CustomerDTO map(Customer source);
 
 	@Mapping(target = "enabled", source = "source.enabled")
 	@Mapping(target = "info.email", source = "source.info.email")

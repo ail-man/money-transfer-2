@@ -44,7 +44,7 @@ public class CustomerService {
 		final LocalDateTime timestamp = localDateTimeNow();
 		customer.setCreatedAt(timestamp);
 		customer.setUpdatedAt(timestamp);
-		final Customer createdCustomer = customerRepoDsl.getRepo().save(customer);
+		final Customer createdCustomer = customerRepoDsl.getRepo().saveAndFlush(customer);
 		return customerMapper.map(createdCustomer);
 	}
 
