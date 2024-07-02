@@ -30,7 +30,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/customers")
 @Slf4j
 @AllArgsConstructor
 public class CustomerController {
@@ -38,7 +38,7 @@ public class CustomerController {
 	private final CustomerService customerService;
 	private final JsonSerializationService jsonSerializationService;
 
-	@GetMapping("/customers")
+	@GetMapping
 	public ResponseEntity<List<CustomerDTO>> searchCustomers(@Valid final CustomerCriteria customerCriteria) {
 		final ServletUriComponentsBuilder urlBuilder = logRequestAndGetUriBuilder("Search customers request: {}");
 		final Long total = customerService.countCustomers(customerCriteria);
@@ -52,7 +52,7 @@ public class CustomerController {
 		return response;
 	}
 
-	@PostMapping("/customers")
+	@PostMapping
 	public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid final CustomerData customerData) {
 		final String requestJson = jsonSerializationService.toJson(customerData);
 		log.debug("Create a new customer request: {}", requestJson);
@@ -66,7 +66,7 @@ public class CustomerController {
 		return response;
 	}
 
-	@PutMapping("/customers/{customerId}")
+	@PutMapping("/{customerId}")
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable final UUID customerId,
 		@RequestHeader(value = XHeaders.ENTITY_VERSION, required = false) final Integer customerVersion,
 		@RequestBody @Valid final CustomerData customerData) {
