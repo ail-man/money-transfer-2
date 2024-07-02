@@ -64,6 +64,7 @@ public class AccountRepoDsl {
 	private BooleanBuilder buildFilter(final AccountCriteria criteria) {
 		BooleanBuilder predicate = new BooleanBuilder();
 		predicate = applyIdFilter(predicate, account.id, criteria.getId());
+		predicate = applyIdFilter(predicate, account.customerId, criteria.getCustomerId());
 		predicate = applyBooleanFilter(predicate, account.enabled, criteria.getEnabled());
 		predicate = applyDateFilter(predicate, account.createdAt, criteria.getCreatedFrom(), criteria.getCreatedTo());
 		predicate = applyDateFilter(predicate, account.expiresAt, criteria.getExpiresFrom(), criteria.getExpiresTo());

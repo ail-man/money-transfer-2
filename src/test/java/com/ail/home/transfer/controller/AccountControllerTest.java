@@ -39,6 +39,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 	private static final String PARAM_ENABLED = "enabled";
 	private static final String PARAM_IBAN = "iban";
 	private static final String PARAM_CURRENCY = "currency";
+	private static final String PARAM_CUSTOMER_ID = "customerId";
 	private static final String PARAM_LIMIT = "limit";
 	private static final String PARAM_OFFSET = "offset";
 
@@ -191,6 +192,27 @@ class AccountControllerTest extends SpringTestContextInitialization {
 
 		accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
 		assertThat(accounts).hasSize(1);
+	}
+
+	@Test
+	void testCustomerIdFilter() throws Exception {
+		final URI uri = defaultUriBuilder()
+			.queryParam(PARAM_CUSTOMER_ID, "aa69e678-b866-471f-80c2-91a42da4bd6f")
+			.build()
+			.toUri();
+
+		final String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"))
+			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+		assertThat(accounts).hasSize(2);
+		assertThat(accounts.get(0).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
+		assertThat(accounts.get(1).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
 	}
 
 	private UriComponentsBuilder defaultUriBuilder() {

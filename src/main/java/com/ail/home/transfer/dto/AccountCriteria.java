@@ -2,6 +2,7 @@ package com.ail.home.transfer.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,6 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class AccountCriteria extends BasicCriteria {
 
+	private UUID customerId; // optional
 	private String iban; // optional
 	private List<String> currency; // optional, 'in' condition
 
