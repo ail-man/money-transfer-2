@@ -18,15 +18,15 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class CustomerCriteria extends BasicCriteria {
+public class AccountCriteria extends BasicCriteria {
 
-	private String email; // optional
-
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDateTime updatedFrom; // optional, inclusive
+	private String iban; // optional
 
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDateTime updatedTo; // optional, inclusive
+	private LocalDateTime expiresFrom; // optional, inclusive
+
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime expiresTo; // optional, inclusive
 
 	// Sorting
 	@ValidateOrderPatternAndFieldName(entityClass = Customer.class)

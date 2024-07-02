@@ -1,31 +1,27 @@
 package com.ail.home.transfer.persistence;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.type.descriptor.jdbc.UUIDJdbcType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Version;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "customers")
+@Entity(name = "accounts")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Customer extends CustomerBase {
+public class Account extends AccountBase {
 
 	@Id
 	@JdbcType(UUIDJdbcType.class)
@@ -35,15 +31,6 @@ public class Customer extends CustomerBase {
 	@Version
 	private Integer version;
 
-	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-	private List<Account> accounts = new ArrayList<>();
-
-	@JsonIgnore
-	public String getEmailDomain() {
-		final String email = getInfo().getEmail();
-		if (email != null) {
-			return email.split("@")[1];
-		}
-		return null;
-	}
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	private Customer customer;
 }

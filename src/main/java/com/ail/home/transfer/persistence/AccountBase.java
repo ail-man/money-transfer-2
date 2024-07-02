@@ -17,15 +17,15 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public abstract class CustomerBase extends EntityBase {
+public abstract class AccountBase extends EntityBase {
 
 	@Column(name = "enabled")
 	private Boolean enabled = false;
 
-	@Column(name = "updated_at", nullable = false)
-	private LocalDateTime updatedAt;
+	@Column(name = "expires_at")
+	private LocalDateTime expiresAt;
 
 	@Type(JsonType.class)
 	@Column(name = "info")
-	private CustomerInfo info;
+	private AccountInfo info;
 }

@@ -15,11 +15,18 @@ public class EntityNotFoundException extends RuntimeException {
 	private static final String CUSTOMER_ID_NOT_FOUND_MESSAGE =
 		"Customer with 'id' [{0}] not found";
 
+	private static final String ACCOUNT_ID_NOT_FOUND_MESSAGE =
+		"Customer with 'id' [{0}] not found";
+
 	public EntityNotFoundException(final String message) {
 		super(message);
 	}
 
 	public static EntityNotFoundException customerIdNotFound(final String customerId) {
 		return new EntityNotFoundException(MessageFormat.format(CUSTOMER_ID_NOT_FOUND_MESSAGE, customerId));
+	}
+
+	public static EntityNotFoundException accountIdNotFound(final String customerId) {
+		return new EntityNotFoundException(MessageFormat.format(ACCOUNT_ID_NOT_FOUND_MESSAGE, customerId));
 	}
 }

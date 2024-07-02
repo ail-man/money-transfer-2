@@ -1,3 +1,6 @@
-- Account <*---1> Customer
+* Account <*---1> Customer
+	- Find Customer by Account
+	- Find Customer Accounts
+	- Assign an Account to another Customer
 - Embedded PostgreSQL
 -

@@ -54,8 +54,8 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 	public void init() throws Exception {
 		// records are initialized in such way that we can simplify testing by comparing the amount of returning records
 		final InputStream src = CustomerControllerTest.class.getResourceAsStream("/database/test_customers.json");
-		final List<Customer> transactions = getMapper().readValue(src, new TypeReference<>() { });
-		customerRepoDsl.getRepo().saveAllAndFlush(transactions);
+		final List<Customer> customers = getMapper().readValue(src, new TypeReference<>() { });
+		customerRepoDsl.getRepo().saveAllAndFlush(customers);
 	}
 
 	@AfterAll

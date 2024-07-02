@@ -35,12 +35,6 @@ public class BasicCriteria {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime createdTo; // optional, inclusive
 
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDateTime updatedFrom; // optional, inclusive
-
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-	private LocalDateTime updatedTo; // optional, inclusive
-
 	// Pagination
 
 	@Positive
