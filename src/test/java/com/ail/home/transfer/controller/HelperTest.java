@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-class TestTest {
+class HelperTest {
 	@Test
 	void name() {
 		for (int i = 0; i < 3; i++) {

@@ -1,11 +1,8 @@
-- Transaction
-
 - TDD with integration tests:
 	- create two new customers
 	- crete accounts for them
-	- transfer
-
-* Account <*---1> Customer
-	- Create an Account for the customer
+	- transfer money between them
 	- Transfer an Account to another Customer (update)
+	- Account top-up
+	- Account withdraw
 - Docker Compose with PostgreSQL
