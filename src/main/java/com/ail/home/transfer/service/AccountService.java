@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ail.home.transfer.dto.AccountCriteria;
 import com.ail.home.transfer.dto.AccountDTO;
@@ -34,6 +35,7 @@ public class AccountService {
 			.toList();
 	}
 
+	@Transactional
 	public AccountDTO createAccount(final AccountData accountData) {
 		final Account account = accountMapper.map(accountData);
 		account.setId(UUID.randomUUID());

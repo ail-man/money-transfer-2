@@ -1,5 +1,5 @@
-- Create Account API
-- Transaction API
+- Test Create Transaction API
+- Search Transaction API
 - TDD with integration tests:
 	- create two new customers
 	- crete accounts for them

@@ -84,6 +84,7 @@ CREATE TABLE "transactions"
   "to_account_id"   UUID                        NOT NULL,
   "amount"          NUMERIC DEFAULT 0           NOT NULL,
   "currency"        CHAR(3)                     NOT NULL,
+  "info"            JSONB,
   CONSTRAINT "transactions_pk" PRIMARY KEY ("id"),
   CONSTRAINT "transaction_from_account_fk" FOREIGN KEY ("from_account_id") REFERENCES "accounts" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION,
   CONSTRAINT "transaction_to_account_fk" FOREIGN KEY ("to_account_id") REFERENCES "accounts" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
