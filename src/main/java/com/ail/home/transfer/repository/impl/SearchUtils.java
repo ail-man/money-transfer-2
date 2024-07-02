@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -79,7 +80,7 @@ public final class SearchUtils {
 		return orderType.getOrder();
 	}
 
-	public static BooleanBuilder applyJsonbFilter(final BooleanBuilder predicate, final Path<?> jsonbPath, final String searchKey,
+	public static BooleanBuilder applyJsonbFilterEquals(final BooleanBuilder predicate, final Path<?> jsonbPath, final String searchKey,
 		final String value) {
 		if (StringUtils.isNotBlank(value)) {
 			return predicate.and(buildJsonbEqualityExpression(jsonbPath, searchKey, value));
@@ -87,9 +88,24 @@ public final class SearchUtils {
 		return predicate;
 	}
 
+	public static BooleanBuilder applyJsonbFilterIn(final BooleanBuilder predicate, final Path<?> jsonbPath, final String searchKey,
+		final List<String> value) {
+		if (CollectionUtils.isNotEmpty(value)) {
+			return predicate.and(buildJsonbInExpression(jsonbPath, searchKey, value));
+		}
+		return predicate;
+	}
+
 	public static BooleanTemplate buildJsonbEqualityExpression(final Path<?> jsonbPath, final String searchKey, final String value) {
 		final String[] jsonKeys = searchKey.split("\\.");
-		return Expressions.booleanTemplate("jsonb_path_match_func({0}, {1}, {2})", jsonbPath, jsonKeys, value);
+		return Expressions.booleanTemplate("jsonb_path_equals_func({0}, {1}, {2})", jsonbPath, jsonKeys, value);
+	}
+
+	public static BooleanTemplate buildJsonbInExpression(final Path<?> jsonbPath, final String searchKey, final List<String> value) {
+		final String[] jsonKeys = searchKey.split("\\.");
+		// Convert the list to an array format that QueryDSL can handle
+		final String[] valueArray = value.toArray(new String[0]);
+		return Expressions.booleanTemplate("jsonb_path_in_func({0}, {1}, {2})", jsonbPath, jsonKeys, valueArray);
 	}
 
 	public static BooleanBuilder applyAmountFilter(final BooleanBuilder predicate,

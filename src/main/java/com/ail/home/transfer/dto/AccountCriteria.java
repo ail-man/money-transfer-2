@@ -1,6 +1,7 @@
 package com.ail.home.transfer.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,6 +22,7 @@ import lombok.ToString;
 public class AccountCriteria extends BasicCriteria {
 
 	private String iban; // optional
+	private List<String> currency; // optional, 'in' condition
 
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime expiresFrom; // optional, inclusive

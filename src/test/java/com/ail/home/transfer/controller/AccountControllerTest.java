@@ -38,6 +38,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 
 	private static final String PARAM_ENABLED = "enabled";
 	private static final String PARAM_IBAN = "iban";
+	private static final String PARAM_CURRENCY = "currency";
 	private static final String PARAM_LIMIT = "limit";
 	private static final String PARAM_OFFSET = "offset";
 
@@ -125,7 +126,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 	@Test
 	void testEmailFilter() throws Exception {
 		final URI uri = defaultUriBuilder()
-			.queryParam(PARAM_IBAN, "DE02120300000000202051")
+			.queryParam(PARAM_IBAN, "US02120300000000202051")
 			.build()
 			.toUri();
 
@@ -141,7 +142,58 @@ class AccountControllerTest extends SpringTestContextInitialization {
 		assertThat(accounts).hasSize(1);
 		final AccountDTO account = accounts.getFirst();
 		assertThat(account.getId()).isEqualTo(UUID.fromString("2492ed49-d04f-43a0-a40e-276ae82191ff"));
-		assertThat(account.getInfo().getIban()).isEqualTo("DE02120300000000202051");
+		assertThat(account.getInfo().getIban()).isEqualTo("US02120300000000202051");
+	}
+
+	@Test
+	void testCurrencyFilter() throws Exception {
+		URI uri = defaultUriBuilder()
+			.queryParam(PARAM_CURRENCY, "USD", "EUR")
+			.build()
+			.toUri();
+
+		String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"))
+			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+		assertThat(accounts).hasSize(3);
+
+		uri = defaultUriBuilder()
+			.queryParam(PARAM_CURRENCY, "EUR", "CNY")
+			.build()
+			.toUri();
+
+		responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"))
+			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+		assertThat(accounts).hasSize(2);
+
+		uri = defaultUriBuilder()
+			.queryParam(PARAM_CURRENCY, "USD", "CNY")
+			.build()
+			.toUri();
+
+		responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(header().string(XHeaders.TOTAL_COUNT, "1"))
+			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+		assertThat(accounts).hasSize(1);
 	}
 
 	private UriComponentsBuilder defaultUriBuilder() {

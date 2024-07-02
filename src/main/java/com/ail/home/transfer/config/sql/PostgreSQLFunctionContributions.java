@@ -16,14 +16,23 @@ public class PostgreSQLFunctionContributions implements FunctionContributor {
 
 	@Override
 	public void contributeFunctions(final FunctionContributions functionContributions) {
-		registerJsonbPathQueryFunction(functionContributions);
+		registerJsonbPathEqualsQueryFunction(functionContributions);
+		registerJsonbPathInQueryFunction(functionContributions);
 	}
 
-	private void registerJsonbPathQueryFunction(final FunctionContributions functionContributions) {
+	private void registerJsonbPathEqualsQueryFunction(final FunctionContributions functionContributions) {
 		final BasicTypeRegistry basicTypeRegistry = functionContributions.getTypeConfiguration().getBasicTypeRegistry();
 		final SqmFunctionRegistry functionRegistry = functionContributions.getFunctionRegistry();
-		functionRegistry.registerPattern("jsonb_path_match_func",
+		functionRegistry.registerPattern("jsonb_path_equals_func",
 			"?1 #>> ?2 = ?3",
+			basicTypeRegistry.resolve(StandardBasicTypes.BOOLEAN));
+	}
+
+	private void registerJsonbPathInQueryFunction(final FunctionContributions functionContributions) {
+		final BasicTypeRegistry basicTypeRegistry = functionContributions.getTypeConfiguration().getBasicTypeRegistry();
+		final SqmFunctionRegistry functionRegistry = functionContributions.getFunctionRegistry();
+		functionRegistry.registerPattern("jsonb_path_in_func",
+			"?1 #>> ?2 = ANY (?3)",
 			basicTypeRegistry.resolve(StandardBasicTypes.BOOLEAN));
 	}
 }

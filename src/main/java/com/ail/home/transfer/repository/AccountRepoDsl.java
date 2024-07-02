@@ -4,7 +4,8 @@ import static com.ail.home.transfer.persistence.QAccount.account;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyBooleanFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyDateFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyIdFilter;
-import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFilter;
+import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFilterEquals;
+import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFilterIn;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getFieldName;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getOrder;
 
@@ -33,6 +34,7 @@ public class AccountRepoDsl {
 	public static final long DEFAULT_LIMIT = 20;
 	public static final String CREATED_AT = "createdAt";
 	public static final String ACCOUNT_INFO_IBAN = "iban";
+	public static final String ACCOUNT_INFO_CURRENCY = "currency";
 
 	private final JPAQueryFactory queryFactory;
 
@@ -65,7 +67,8 @@ public class AccountRepoDsl {
 		predicate = applyBooleanFilter(predicate, account.enabled, criteria.getEnabled());
 		predicate = applyDateFilter(predicate, account.createdAt, criteria.getCreatedFrom(), criteria.getCreatedTo());
 		predicate = applyDateFilter(predicate, account.expiresAt, criteria.getExpiresFrom(), criteria.getExpiresTo());
-		predicate = applyJsonbFilter(predicate, account.info, ACCOUNT_INFO_IBAN, criteria.getIban());
+		predicate = applyJsonbFilterEquals(predicate, account.info, ACCOUNT_INFO_IBAN, criteria.getIban());
+		predicate = applyJsonbFilterIn(predicate, account.info, ACCOUNT_INFO_CURRENCY, criteria.getCurrency());
 		return predicate;
 	}
 
