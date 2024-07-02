@@ -195,14 +195,14 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 				.getResponse()
 				.getContentAsString();
 
-		CustomerDTO updatedCustomer = getJsonSerializationService().fromJson(responseBody, CustomerDTO.class);
-		assertThat(updatedCustomer.getId()).isNotNull();
-		assertThat(updatedCustomer.getVersion()).isZero();
-		assertThat(updatedCustomer.getEnabled()).isFalse();
+		CustomerDTO customer = getJsonSerializationService().fromJson(responseBody, CustomerDTO.class);
+		assertThat(customer.getId()).isNotNull();
+		assertThat(customer.getVersion()).isZero();
+		assertThat(customer.getEnabled()).isFalse();
 		final LocalDateTime timestamp = localDateTimeNow();
-		assertThat(updatedCustomer.getCreatedAt()).isBefore(timestamp);
-		assertThat(updatedCustomer.getUpdatedAt()).isEqualTo(updatedCustomer.getCreatedAt());
-		CustomerInfo actualCustomerInfo = updatedCustomer.getInfo();
+		assertThat(customer.getCreatedAt()).isBefore(timestamp);
+		assertThat(customer.getUpdatedAt()).isEqualTo(customer.getCreatedAt());
+		CustomerInfo actualCustomerInfo = customer.getInfo();
 		assertThat(actualCustomerInfo).isNotNull();
 		assertThat(actualCustomerInfo.getEmail()).isEqualTo(customerInfo.getEmail());
 		assertThat(actualCustomerInfo.getPhone()).isEqualTo(customerInfo.getPhone());
@@ -223,7 +223,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 			.build();
 		json = getJsonSerializationService().toJson(customerData);
 
-		final String url = String.join("/", CUSTOMERS_PATH, updatedCustomer.getId().toString());
+		final String url = String.join("/", CUSTOMERS_PATH, customer.getId().toString());
 
 		responseBody =
 			getMockMvc().perform(put(url).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
@@ -235,13 +235,13 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 				.getResponse()
 				.getContentAsString();
 
-		updatedCustomer = getJsonSerializationService().fromJson(responseBody, CustomerDTO.class);
-		assertThat(updatedCustomer.getId()).isNotNull();
-		assertThat(updatedCustomer.getVersion()).isEqualTo(1);
-		assertThat(updatedCustomer.getEnabled()).isTrue();
-		assertThat(updatedCustomer.getCreatedAt()).isBefore(timestamp);
-		assertThat(updatedCustomer.getUpdatedAt()).isAfter(timestamp);
-		actualCustomerInfo = updatedCustomer.getInfo();
+		customer = getJsonSerializationService().fromJson(responseBody, CustomerDTO.class);
+		assertThat(customer.getId()).isNotNull();
+		assertThat(customer.getVersion()).isEqualTo(1);
+		assertThat(customer.getEnabled()).isTrue();
+		assertThat(customer.getCreatedAt()).isBefore(timestamp);
+		assertThat(customer.getUpdatedAt()).isAfter(timestamp);
+		actualCustomerInfo = customer.getInfo();
 		assertThat(actualCustomerInfo).isNotNull();
 		assertThat(actualCustomerInfo.getEmail()).isEqualTo(customerInfo.getEmail());
 		assertThat(actualCustomerInfo.getPhone()).isEqualTo(customerInfo.getPhone());

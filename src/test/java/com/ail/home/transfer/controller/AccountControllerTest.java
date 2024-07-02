@@ -2,13 +2,17 @@ package com.ail.home.transfer.controller;
 
 import static com.ail.home.transfer.controller.ControllerTestUtils.defaultUriBuilder;
 import static com.ail.home.transfer.controller.ControllerTestUtils.getLinkFromHeader;
+import static com.ail.home.transfer.utils.Utils.localDateTimeNow;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +27,9 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.ail.home.transfer.SpringTestContextInitialization;
 import com.ail.home.transfer.dto.AccountDTO;
+import com.ail.home.transfer.dto.AccountData;
 import com.ail.home.transfer.persistence.Account;
+import com.ail.home.transfer.persistence.AccountInfo;
 import com.ail.home.transfer.persistence.Customer;
 import com.ail.home.transfer.repository.AccountHistoryRepoDsl;
 import com.ail.home.transfer.repository.AccountRepoDsl;
@@ -214,4 +220,92 @@ class AccountControllerTest extends SpringTestContextInitialization {
 		assertThat(accounts.get(0).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
 		assertThat(accounts.get(1).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
 	}
+
+	@Test
+	void testCreateThenUpdateAccount() throws Exception {
+		AccountInfo accountInfo = AccountInfo.builder()
+			.iban("AT483200000012345864")
+			.build();
+		final LocalDateTime expiresAt = localDateTimeNow().plusYears(5);
+		AccountData accountData = AccountData.builder()
+			.customerId(UUID.fromString("f7309de5-5312-4bee-9160-903cc51085bb"))
+			.enabled(true)
+			.balance(new BigInteger("10000"))
+			.currency("EUR")
+			.info(accountInfo)
+			.expiresAt(expiresAt)
+			.build();
+		String json = getJsonSerializationService().toJson(accountData);
+
+		final URI uri = defaultUriBuilder(ACCOUNTS_PATH)
+			.build()
+			.toUri();
+
+		// CREATE
+
+		String responseBody =
+			getMockMvc().perform(post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+					.content(json))
+				.andExpect(status().isCreated())
+				.andExpect(header().exists(HttpHeaders.LOCATION))
+				.andExpect(header().string(XHeaders.ENTITY_VERSION, "0"))
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
+
+		AccountDTO account = getJsonSerializationService().fromJson(responseBody, AccountDTO.class);
+		assertThat(account.getId()).isNotNull();
+		assertThat(account.getVersion()).isZero();
+		assertThat(account.getCustomerId()).isEqualTo(UUID.fromString("f7309de5-5312-4bee-9160-903cc51085bb"));
+		assertThat(account.getEnabled()).isTrue();
+		assertThat(account.getBalance()).isEqualTo(new BigInteger("10000"));
+		assertThat(account.getCurrency()).isEqualTo("EUR");
+		final LocalDateTime timestamp = localDateTimeNow();
+		assertThat(account.getCreatedAt()).isBefore(timestamp);
+		assertThat(account.getUpdatedAt()).isEqualTo(account.getCreatedAt());
+		assertThat(account.getExpiresAt()).isEqualTo(expiresAt);
+		AccountInfo actualAccountInfo = account.getInfo();
+		assertThat(actualAccountInfo).isNotNull();
+		assertThat(actualAccountInfo.getIban()).isEqualTo("AT483200000012345864");
+
+		//		// UPDATE TODO probably it's not safe to have this endpoint, hence so far we will use dedicated endpoints
+		//
+		//		accountInfo = CustomerInfo.builder()
+		//			.email("test-updated@ail-man.com")
+		//			.phone("0987654321")
+		//			.firstName("Sofia")
+		//			.lastName("Chandler")
+		//			.build();
+		//		accountData = CustomerData.builder()
+		//			.enabled(true)
+		//			.info(accountInfo)
+		//			.build();
+		//		json = getJsonSerializationService().toJson(accountData);
+		//
+		//		final String url = String.join("/", ACCOUNTS_PATH, account.getId().toString());
+		//
+		//		responseBody =
+		//			getMockMvc().perform(put(url).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+		//					.header(XHeaders.ENTITY_VERSION, 0)
+		//					.content(json))
+		//				.andExpect(status().isOk())
+		//				.andExpect(header().string(XHeaders.ENTITY_VERSION, "1"))
+		//				.andReturn()
+		//				.getResponse()
+		//				.getContentAsString();
+		//
+		//		account = getJsonSerializationService().fromJson(responseBody, CustomerDTO.class);
+		//		assertThat(account.getId()).isNotNull();
+		//		assertThat(account.getVersion()).isEqualTo(1);
+		//		assertThat(account.getEnabled()).isTrue();
+		//		assertThat(account.getCreatedAt()).isBefore(timestamp);
+		//		assertThat(account.getUpdatedAt()).isAfter(timestamp);
+		//		actualAccountInfo = account.getInfo();
+		//		assertThat(actualAccountInfo).isNotNull();
+		//		assertThat(actualAccountInfo.getEmail()).isEqualTo(accountInfo.getEmail());
+		//		assertThat(actualAccountInfo.getPhone()).isEqualTo(accountInfo.getPhone());
+		//		assertThat(actualAccountInfo.getFirstName()).isEqualTo(customerInfo.getFirstName());
+		//		assertThat(actualAccountInfo.getLastName()).isEqualTo(accountInfo.getLastName());
+	}
+
 }
