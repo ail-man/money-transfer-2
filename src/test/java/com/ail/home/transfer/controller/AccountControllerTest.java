@@ -268,7 +268,7 @@ class AccountControllerTest extends SpringTestContextInitialization {
 		assertThat(actualAccountInfo).isNotNull();
 		assertThat(actualAccountInfo.getIban()).isEqualTo("AT483200000012345864");
 
-		//		// UPDATE TODO probably it's not safe to have this endpoint, hence so far we will use dedicated endpoints
+		//		// UPDATE TODO
 		//
 		//		accountInfo = CustomerInfo.builder()
 		//			.email("test-updated@ail-man.com")
