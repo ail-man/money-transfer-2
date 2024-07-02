@@ -1,6 +1,7 @@
 package com.ail.home.transfer.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class CustomerCriteria extends BasicCriteria {
 
-	private String email; // optional
+	private List<String> email; // optional, 'in' condition
 
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime updatedFrom; // optional, inclusive

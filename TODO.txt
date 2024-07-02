@@ -1,6 +1,3 @@
-- Currency and Balance to Account
-- Move JSONB IN search to Customer
-
 - TDD with integration tests:
 	- create two new customers
 	- crete accounts for them

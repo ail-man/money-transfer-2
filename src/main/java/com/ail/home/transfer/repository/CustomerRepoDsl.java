@@ -4,7 +4,7 @@ import static com.ail.home.transfer.persistence.QCustomer.customer;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyBooleanFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyDateFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyIdFilter;
-import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFilterEquals;
+import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFieldValueInCollectionFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getFieldName;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getOrder;
 
@@ -65,7 +65,7 @@ public class CustomerRepoDsl {
 		predicate = applyBooleanFilter(predicate, customer.enabled, criteria.getEnabled());
 		predicate = applyDateFilter(predicate, customer.createdAt, criteria.getCreatedFrom(), criteria.getCreatedTo());
 		predicate = applyDateFilter(predicate, customer.updatedAt, criteria.getUpdatedFrom(), criteria.getUpdatedTo());
-		predicate = applyJsonbFilterEquals(predicate, customer.info, CUSTOMER_INFO_EMAIL, criteria.getEmail());
+		predicate = applyJsonbFieldValueInCollectionFilter(predicate, customer.info, CUSTOMER_INFO_EMAIL, criteria.getEmail());
 		return predicate;
 	}
 

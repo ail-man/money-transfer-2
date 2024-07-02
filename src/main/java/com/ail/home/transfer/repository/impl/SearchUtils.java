@@ -80,30 +80,31 @@ public final class SearchUtils {
 		return orderType.getOrder();
 	}
 
-	public static BooleanBuilder applyJsonbFilterEquals(final BooleanBuilder predicate, final Path<?> jsonbPath, final String searchKey,
-		final String value) {
+	public static BooleanBuilder applyJsonbFieldValueEqualsFilter(final BooleanBuilder predicate, final Path<?> jsonbPath,
+		final String searchKey, final String value) {
 		if (StringUtils.isNotBlank(value)) {
-			return predicate.and(buildJsonbEqualityExpression(jsonbPath, searchKey, value));
+			return predicate.and(buildJsonbFieldEqualsExpression(jsonbPath, searchKey, value));
 		}
 		return predicate;
 	}
 
-	public static BooleanBuilder applyJsonbFilterIn(final BooleanBuilder predicate, final Path<?> jsonbPath, final String searchKey,
-		final List<String> value) {
+	public static BooleanBuilder applyJsonbFieldValueInCollectionFilter(final BooleanBuilder predicate, final Path<?> jsonbPath,
+		final String searchKey, final List<String> value) {
 		if (CollectionUtils.isNotEmpty(value)) {
-			return predicate.and(buildJsonbInExpression(jsonbPath, searchKey, value));
+			return predicate.and(buildJsonbFieldInCollectionExpression(jsonbPath, searchKey, value));
 		}
 		return predicate;
 	}
 
 	// TODO check SQL injections
-	public static BooleanTemplate buildJsonbEqualityExpression(final Path<?> jsonbPath, final String searchKey, final String value) {
+	public static BooleanTemplate buildJsonbFieldEqualsExpression(final Path<?> jsonbPath, final String searchKey, final String value) {
 		final String[] jsonKeys = searchKey.split("\\.");
 		return Expressions.booleanTemplate("jsonb_path_equals_func({0}, {1}, {2})", jsonbPath, jsonKeys, value);
 	}
 
 	// TODO check SQL injections
-	public static BooleanTemplate buildJsonbInExpression(final Path<?> jsonbPath, final String searchKey, final List<String> value) {
+	public static BooleanTemplate buildJsonbFieldInCollectionExpression(final Path<?> jsonbPath, final String searchKey,
+		final List<String> value) {
 		final String[] jsonKeys = searchKey.split("\\.");
 		// Convert the list to an array format that QueryDSL can handle
 		final String[] valueArray = value.toArray(new String[0]);

@@ -5,7 +5,7 @@ import static com.ail.home.transfer.repository.impl.SearchUtils.applyBooleanFilt
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyDateFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyIdFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyInStringCollectionFilter;
-import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFilterEquals;
+import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFieldValueEqualsFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getFieldName;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getOrder;
 
@@ -67,7 +67,7 @@ public class AccountRepoDsl {
 		predicate = applyBooleanFilter(predicate, account.enabled, criteria.getEnabled());
 		predicate = applyDateFilter(predicate, account.createdAt, criteria.getCreatedFrom(), criteria.getCreatedTo());
 		predicate = applyDateFilter(predicate, account.expiresAt, criteria.getExpiresFrom(), criteria.getExpiresTo());
-		predicate = applyJsonbFilterEquals(predicate, account.info, ACCOUNT_INFO_IBAN, criteria.getIban());
+		predicate = applyJsonbFieldValueEqualsFilter(predicate, account.info, ACCOUNT_INFO_IBAN, criteria.getIban());
 		predicate = applyInStringCollectionFilter(predicate, account.currency, criteria.getCurrency());
 		return predicate;
 	}

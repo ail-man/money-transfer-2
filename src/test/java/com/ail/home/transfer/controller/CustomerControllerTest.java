@@ -113,12 +113,12 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 
 	@Test
 	void testEmailFilter() throws Exception {
-		final URI uri = defaultUriBuilder()
+		URI uri = defaultUriBuilder()
 			.queryParam(PARAM_EMAIL, "test1@com.com")
 			.build()
 			.toUri();
 
-		final String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+		String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
 			.andExpect(header().string(XHeaders.TOTAL_COUNT, "1"))
 			.andExpect(header().doesNotExist(HttpHeaders.LINK))
@@ -126,11 +126,43 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 			.getResponse()
 			.getContentAsString();
 
-		final List<CustomerDTO> customers = getMapper().readValue(responseBody, new TypeReference<>() { });
+		List<CustomerDTO> customers = getMapper().readValue(responseBody, new TypeReference<>() { });
 		assertThat(customers).hasSize(1);
 		final CustomerDTO customer = customers.getFirst();
 		assertThat(customer.getId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
 		assertThat(customer.getInfo().getEmail()).isEqualTo("test1@com.com");
+
+		uri = defaultUriBuilder()
+			.queryParam(PARAM_EMAIL, "test1@com.com", "test2@de.de")
+			.build()
+			.toUri();
+
+		responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"))
+			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		customers = getMapper().readValue(responseBody, new TypeReference<>() { });
+		assertThat(customers).hasSize(2);
+
+		uri = defaultUriBuilder()
+			.queryParam(PARAM_EMAIL, "test1@com.com", "test2@de.de", "test3@org.org")
+			.build()
+			.toUri();
+
+		responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"))
+			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+			.andReturn()
+			.getResponse()
+			.getContentAsString();
+
+		customers = getMapper().readValue(responseBody, new TypeReference<>() { });
+		assertThat(customers).hasSize(3);
 	}
 
 	@Test
