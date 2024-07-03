@@ -18,6 +18,19 @@ public final class ObjectMerger {
 		.addModule(new JavaTimeModule())
 		.build();
 
+	/**
+	 * Merges data from obj2 to obj1.
+	 * <p>
+	 * IMPORTANT! Should not be used with objects which have cross-references.
+	 * Otherwise, it will be StackOverflowError due to infinite recursion.
+	 *
+	 * @param obj1
+	 * @param obj2
+	 * @param clazz
+	 * @param <T>
+	 * @param <U>
+	 * @return
+	 */
 	public static <T, U> T mergeObjects(T obj1, U obj2, Class<T> clazz) {
 		try {
 			final ObjectNode mainNode = OBJECT_MAPPER.convertValue(obj1, ObjectNode.class);
