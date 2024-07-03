@@ -15,11 +15,15 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -275,4 +279,36 @@ class TransactionControllerTest extends SpringTestContextInitialization {
 		assertThat(toAccount.getBalance()).isEqualTo(new BigDecimal("100000030.15"));
 	}
 
+	@ParameterizedTest
+	@MethodSource("testDataForCreateTransactionForDifferentCurrencies")
+	void testCreateTransactionForDifferentCurrencies(final UUID toAccountId, final String transactionCurrency) throws Exception {
+		final TransactionInfo transactionInfo = TransactionInfo.builder()
+			.comment("Thank you very much!")
+			.build();
+		final UUID fromAccountId = UUID.fromString("cf255190-0474-471c-8530-8a5162bc7a54");
+		final TransactionData transactionData = TransactionData.builder()
+			.amount(new BigDecimal("100000000"))
+			.currency(transactionCurrency)
+			.fromAccountId(fromAccountId)
+			.toAccountId(toAccountId)
+			.info(transactionInfo)
+			.build();
+		String json = getJsonSerializationService().toJson(transactionData);
+
+		final URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
+			.build()
+			.toUri();
+
+		getMockMvc().perform(post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+				.content(json))
+			.andExpect(status().isConflict());
+	}
+
+	private static Stream<Arguments> testDataForCreateTransactionForDifferentCurrencies() {
+		return Stream.of(
+			Arguments.of(UUID.fromString("71367d92-2d45-402b-8984-f6481ac98689"), "USD"),
+			Arguments.of(UUID.fromString("2492ed49-d04f-43a0-a40e-276ae82191ff"), "EUR"),
+			Arguments.of(UUID.fromString("2492ed49-d04f-43a0-a40e-276ae82191ff"), "USD")
+		);
+	}
 }

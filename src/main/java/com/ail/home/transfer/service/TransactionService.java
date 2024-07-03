@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ail.home.transfer.dto.TransactionDTO;
 import com.ail.home.transfer.dto.TransactionData;
-import com.ail.home.transfer.exceptions.RequestValidationException;
+import com.ail.home.transfer.exceptions.InvalidStateException;
 import com.ail.home.transfer.mapper.TransactionMapper;
 import com.ail.home.transfer.persistence.Account;
 import com.ail.home.transfer.persistence.Transaction;
@@ -42,8 +42,8 @@ public class TransactionService {
 		final String fromCurrency = fromAccount.getCurrency();
 		final String toCurrency = toAccount.getCurrency();
 
-		if (!transactionCurrency.equals(fromCurrency) && !transactionCurrency.equals(toCurrency)) {
-			throw new RequestValidationException("Currency conversion is not yet implemented");
+		if (!isAllCurrenciesAreTheSame(transactionCurrency, fromCurrency, toCurrency)) {
+			throw new InvalidStateException("Currency conversion is not yet implemented");
 		}
 
 		final BigDecimal transactionAmount = transaction.getAmount();
@@ -65,5 +65,10 @@ public class TransactionService {
 		accountRepoDsl.getRepo().saveAndFlush(toAccount);
 
 		return transactionMapper.map(createdTransaction);
+	}
+
+	private static boolean isAllCurrenciesAreTheSame(final String transactionCurrency, final String fromCurrency,
+		final String toCurrency) {
+		return transactionCurrency.equals(fromCurrency) && transactionCurrency.equals(toCurrency);
 	}
 }

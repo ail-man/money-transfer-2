@@ -1,4 +1,3 @@
-- Test Create Transaction API corner cases with different currencies
 - Update Account API (customerId, enabled, expiresAt, info)
 - Search Transaction API
 - Transfer an Account to another Customer (update)
