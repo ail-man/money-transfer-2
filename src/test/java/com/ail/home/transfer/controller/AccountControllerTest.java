@@ -305,6 +305,15 @@ class AccountControllerTest extends SpringTestContextInitialization {
 		assertThat(actualAccountInfo).isNotNull();
 		assertThat(actualAccountInfo.getIban()).isNull();
 		assertThat(actualAccountInfo.getCardNumber()).isEqualTo("5555555555554444");
+
+		responseBody =
+			getMockMvc().perform(put(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json))
+				.andExpect(status().isConflict())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
+
+		assertThat(responseBody).contains("Version 0 does not match the current entity version 1");
 	}
 
 }

@@ -242,6 +242,15 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 		assertThat(actualCustomerInfo.getPhone()).isNull();
 		assertThat(actualCustomerInfo.getFirstName()).isEqualTo(customerInfo.getFirstName());
 		assertThat(actualCustomerInfo.getLastName()).isEqualTo(customerInfo.getLastName());
+
+		responseBody =
+			getMockMvc().perform(put(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json))
+				.andExpect(status().isConflict())
+				.andReturn()
+				.getResponse()
+				.getContentAsString();
+
+		assertThat(responseBody).contains("Version 0 does not match the current entity version 1");
 	}
 
 }
