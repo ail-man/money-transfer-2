@@ -1,8 +1,7 @@
 package com.ail.home.transfer.config;
 
-import static com.ail.home.transfer.utils.Utils.localDateTimeNow;
-import static com.ail.home.transfer.utils.Utils.localDateTimeString;
 import static com.ail.home.transfer.controller.XHeaders.RESPONSE_TIMESTAMP;
+import static com.ail.home.transfer.utils.Utils.localDateTimeNowString;
 
 import java.io.IOException;
 
@@ -22,7 +21,7 @@ public class HttpHeaderCustomizationFilter implements Filter {
 	public void doFilter(final ServletRequest request, final ServletResponse response,
 		final FilterChain chain) throws IOException, ServletException {
 		final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-		httpServletResponse.setHeader(RESPONSE_TIMESTAMP, localDateTimeString(localDateTimeNow()));
+		httpServletResponse.setHeader(RESPONSE_TIMESTAMP, localDateTimeNowString());
 		chain.doFilter(request, response);
 	}
 
