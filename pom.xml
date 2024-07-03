@@ -27,7 +27,7 @@
 		<docker-maven-plugin.version>0.44.0</docker-maven-plugin.version>
 		<findbugs-annotations.version>3.0.1</findbugs-annotations.version>
 		<guava.version>33.1.0-jre</guava.version>
-		<testng.version>7.10.1</testng.version>
+		<testng.version>7.10.2</testng.version>
 		<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
 		<jacoco-plugin.skip>true</jacoco-plugin.skip>
 		<postgres-driver.version>42.7.2</postgres-driver.version>
