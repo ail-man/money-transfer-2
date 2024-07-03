@@ -23,7 +23,6 @@
 	<properties>
 		<java.version>21</java.version>
 		<spring-boot.version>3.2.5</spring-boot.version>
-		<!-- Main -->
 		<jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
 		<docker-maven-plugin.version>0.44.0</docker-maven-plugin.version>
 		<findbugs-annotations.version>3.0.1</findbugs-annotations.version>
@@ -31,21 +30,15 @@
 		<testng.version>7.10.1</testng.version>
 		<spring-boot.repackage.skip>false</spring-boot.repackage.skip>
 		<jacoco-plugin.skip>true</jacoco-plugin.skip>
-		<!-- Database & Migration -->
 		<postgres-driver.version>42.7.2</postgres-driver.version>
 		<liquibase-core.version>4.26.0</liquibase-core.version>
-		<!-- QueryDSL -->
 		<querydsl.version>5.1.0</querydsl.version>
 		<querydsl.plugin.version>1.1.3</querydsl.plugin.version>
-		<!-- JPA -->
 		<io.hypersistence.version>3.7.5</io.hypersistence.version>
-		<!-- gRPC & Protobuf -->
 		<io.grpc.version>1.62.2</io.grpc.version>
 		<proto-google-common-protos.version>2.36.0</proto-google-common-protos.version>
 		<protobuf-spi-impl.version>1.44</protobuf-spi-impl.version>
-		<!-- Kafka Support -->
 		<confluent.platform.version>7.6.0</confluent.platform.version>
-		<!-- External APIs SDKs -->
 		<google.cloud.version>26.33.0</google.cloud.version>
 		<microsoft-graph.version>5.15.0</microsoft-graph.version>
 		<azure-identity.version>1.11.3</azure-identity.version>
@@ -54,70 +47,58 @@
 		<org.apache.commons-compress.version>1.26.1</org.apache.commons-compress.version>
 		<org.apache.commons-beanutils-core.version>1.8.3</org.apache.commons-beanutils-core.version>
 		<sentry.version>7.5.0</sentry.version>
-		<!-- Utility -->
 		<git.commit.id.maven.plugin.version>8.0.2</git.commit.id.maven.plugin.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
 		<org.apache.httpcomponents.version>5.3.1</org.apache.httpcomponents.version>
-		<!-- Test Support -->
 		<test-framework-util.version>1.123.0</test-framework-util.version>
 		<postgres-test-containers-version>1.19.8</postgres-test-containers-version>
-		<!-- Parent/Project Flags -->
-		<jacoco-plugin.skip>false</jacoco-plugin.skip>
 	</properties>
 
 	<dependencies>
-
-		<!-- Spring Web -->
+		<!-- Spring Boot Starters -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-		<!-- Spring Actuator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-
-		<!-- Spring AOP -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-
-		<!-- Spring Cache -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
-
-		<!-- Spring Data JPA -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
-		<!-- Spring Validation API -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>commons-validator</groupId>
-			<artifactId>commons-validator</artifactId>
-			<version>${commons-validator.version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 
-		<!-- Database -->
+		<!-- Database & Migration -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${postgres-driver.version}</version>
 		</dependency>
-
-		<!-- DB Migration -->
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
@@ -131,7 +112,6 @@
 			<version>${querydsl.version}</version>
 			<classifier>jakarta</classifier>
 		</dependency>
-
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
@@ -153,92 +133,71 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- DevTools -->
+		<!-- Utility -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+			<version>${commons-validator.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-
-		<!--  Utility  -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils-core</artifactId>
 			<version>${org.apache.commons-beanutils-core.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
 			<version>${org.apache.commons-compress.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>${org.mapstruct.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents.client5</groupId>
 			<artifactId>httpclient5</artifactId>
 			<version>${org.apache.httpcomponents.version}</version>
 		</dependency>
-
-		<!-- Test Support -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgres-test-containers-version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Additionally -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>findbugs-annotations</artifactId>
 			<version>${findbugs-annotations.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 
+		<!-- Testing -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>${testng.version}</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- Test dependencies from Spring Boot - set scope -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgres-test-containers-version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-test</artifactId>
@@ -253,6 +212,29 @@
 
 	<build>
 		<plugins>
+			<!-- Spring Boot Plugin -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+					<skip>${spring-boot.repackage.skip}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-info</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- QueryDSL Plugin -->
 			<plugin>
 				<groupId>com.mysema.maven</groupId>
 				<artifactId>apt-maven-plugin</artifactId>
@@ -269,27 +251,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-				<!-- Add Build Information to the Actuator Info endpoint -->
-				<!-- See https://docs.spring.io/spring-boot/docs/2.4.1/reference/htmlsingle/#howto-build-info -->
-				<executions>
-					<execution>
-						<goals>
-							<goal>build-info</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+
+			<!-- Compiler Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -313,32 +276,12 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
-			<!-- Add Git Information to the Actuator Info endpoint -->
-			<!-- See https://docs.spring.io/spring-boot/docs/3.0.0/reference/htmlsingle/#howto.build.generate-git-info -->
-			<plugin>
-				<groupId>io.github.git-commit-id</groupId>
-				<artifactId>git-commit-id-maven-plugin</artifactId>
-				<version>${git.commit.id.maven.plugin.version}</version>
-				<executions>
-					<execution>
-						<id>get-the-git-infos</id>
-						<goals>
-							<goal>revision</goal>
-						</goals>
-						<phase>initialize</phase>
-					</execution>
-				</executions>
-				<configuration>
-					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
-					<generateGitPropertiesFile>true</generateGitPropertiesFile>
-					<abbrevLength>8</abbrevLength>
-					<verbose>true</verbose>
-				</configuration>
-			</plugin>
-			<!-- JaCoCo Test Coverage -->
+
+			<!-- JaCoCo Plugin -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<id>jacoco-check</id>
@@ -361,16 +304,6 @@
 							</rules>
 						</configuration>
 					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<configuration>
-					<skip>${jacoco-plugin.skip}</skip>
-				</configuration>
-				<executions>
 					<execution>
 						<id>default-prepare-agent</id>
 						<goals>
@@ -422,46 +355,8 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>**/*$*</exclude>
-						<exclude>**/*IT</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>com.google.code.findbugs</groupId>
-							<artifactId>findbugs-annotations</artifactId>
-						</exclude>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-						<exclude>
-							<groupId>org.springframework.boot</groupId>
-							<artifactId>spring-boot-configuration-processor</artifactId>
-						</exclude>
-					</excludes>
-					<skip>${spring-boot.repackage.skip}</skip>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<configuration>
-					<includes>
-						<include>**/*IT</include>
-					</includes>
-				</configuration>
-			</plugin>
 
-			<!-- Enforce correct value of "spring-boot.version" -->
+			<!-- Enforcer Plugin -->
 			<plugin>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<executions>
@@ -473,13 +368,11 @@
 						</goals>
 						<configuration>
 							<rules>
-								<!-- enforce major version "3" to avoid version number clashes -->
 								<requireProperty>
 									<property>spring-boot.version</property>
 									<regex>3\..+</regex>
 									<regexMessage>"spring-boot.version" must start with "3."</regexMessage>
 								</requireProperty>
-								<!-- both directions are needed because we have only "regex" comparison and version numbers contain dots -->
 								<requireProperty>
 									<property>spring-boot.version</property>
 									<regex>${project.parent.version}</regex>
@@ -512,7 +405,98 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- Surefire Plugin -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*$*</exclude>
+						<exclude>**/*IT</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<!-- Failsafe Plugin -->
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*IT</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<!-- Git Commit ID Plugin -->
+			<plugin>
+				<groupId>io.github.git-commit-id</groupId>
+				<artifactId>git-commit-id-maven-plugin</artifactId>
+				<version>${git.commit.id.maven.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>get-the-git-infos</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+					<abbrevLength>8</abbrevLength>
+					<verbose>true</verbose>
+				</configuration>
+			</plugin>
+
+			<!-- Docker Maven Plugin -->
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>${docker-maven-plugin.version}</version>
+				<configuration>
+					<imagePullPolicy>always</imagePullPolicy>
+					<images>
+						<image>
+							<name>${env.DOCKER_REGISTRY_URL_PUSH_1}/${project.artifactId}</name>
+							<build>
+								<tags>
+									<tag>${project.version}-${git.commit.id}</tag>
+								</tags>
+								<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+								<contextDir>${project.basedir}</contextDir>
+								<args>
+									<JAR_FILE>target/${project.artifactId}-${project.version}.jar</JAR_FILE>
+								</args>
+							</build>
+						</image>
+						<image>
+							<name>${env.DOCKER_REGISTRY_URL_PUSH_2}/${project.artifactId}</name>
+							<build>
+								<tags>
+									<tag>${project.version}-${git.commit.id}</tag>
+								</tags>
+								<dockerFile>${project.basedir}/Dockerfile</dockerFile>
+								<contextDir>${project.basedir}</contextDir>
+								<args>
+									<JAR_FILE>target/${project.artifactId}-${project.version}.jar</JAR_FILE>
+								</args>
+							</build>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
