@@ -3,3 +3,5 @@
 - CustomerCreateRequest/CustomerCreateResponse, CustomerUpdateRequest/CustomerUpdateResponse
 - TransactionCreateRequest/TransactionCreateResponse
 - Docker Compose with PostgreSQL
+- README.md
+- Improve tests
