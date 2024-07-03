@@ -13,6 +13,6 @@ public interface TransactionRepo extends JpaRepository<Transaction, UUID> {
 
 	default Transaction findByIdOrFail(final UUID id) throws EntityNotFoundException {
 		return this.findById(id)
-			.orElseThrow(() -> EntityNotFoundException.accountIdNotFound(id.toString()));
+			.orElseThrow(() -> EntityNotFoundException.accountIdNotFound(id));
 	}
 }

@@ -16,7 +16,7 @@ import com.ail.home.transfer.dto.CustomerData;
 import com.ail.home.transfer.mapper.CustomerMapper;
 import com.ail.home.transfer.persistence.Customer;
 import com.ail.home.transfer.repository.CustomerRepoDsl;
-import com.ail.home.transfer.utils.BeanUtils;
+import com.ail.home.transfer.utils.ObjectMerger;
 
 import lombok.AllArgsConstructor;
 
@@ -53,10 +53,10 @@ public class CustomerService {
 
 	@Transactional
 	public CustomerDTO updateCustomer(final CustomerData customerData) {
-		final Customer customer = customerRepoDsl.getRepo().findLockedByIdOrFail(customerData.getId());
-		validateEntityVersion(customer.getVersion(), customerData.getVersion());
+		Customer customer = customerRepoDsl.getRepo().findLockedByIdOrFail(customerData.getId());
+		validateEntityVersion(customerData.getVersion(), customer.getVersion());
+		customer = ObjectMerger.mergeObjects(customer, customerData, Customer.class);
 		customer.setUpdatedAt(localDateTimeNow());
-		BeanUtils.copyNonNullProperties(customerData, customer);
 		final Customer updatedCustomer = customerRepoDsl.getRepo().saveAndFlush(customer);
 		return customerMapper.map(updatedCustomer);
 	}

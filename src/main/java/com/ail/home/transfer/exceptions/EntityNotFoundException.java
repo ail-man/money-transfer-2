@@ -2,6 +2,7 @@ package com.ail.home.transfer.exceptions;
 
 import java.io.Serial;
 import java.text.MessageFormat;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -25,15 +26,15 @@ public class EntityNotFoundException extends RuntimeException {
 		super(message);
 	}
 
-	public static EntityNotFoundException customerIdNotFound(final String customerId) {
+	public static EntityNotFoundException customerIdNotFound(final UUID customerId) {
 		return new EntityNotFoundException(MessageFormat.format(CUSTOMER_ID_NOT_FOUND_MESSAGE, customerId));
 	}
 
-	public static EntityNotFoundException accountIdNotFound(final String customerId) {
+	public static EntityNotFoundException accountIdNotFound(final UUID customerId) {
 		return new EntityNotFoundException(MessageFormat.format(ACCOUNT_ID_NOT_FOUND_MESSAGE, customerId));
 	}
 
-	public static EntityNotFoundException transactionIdNotFound(final String transactionId) {
+	public static EntityNotFoundException transactionIdNotFound(final UUID transactionId) {
 		return new EntityNotFoundException(MessageFormat.format(TRANSACTION_ID_NOT_FOUND_MESSAGE, transactionId));
 	}
 }

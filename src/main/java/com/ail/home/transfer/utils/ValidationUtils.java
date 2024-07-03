@@ -1,6 +1,7 @@
 package com.ail.home.transfer.utils;
 
 import com.ail.home.transfer.exceptions.OutdatedVersionException;
+import com.ail.home.transfer.exceptions.RequestValidationException;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -8,12 +9,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ValidationUtils {
 
-	public static void validateEntityVersion(final Integer actualVersion, final Integer expectedVersion) {
+	public static void validateEntityVersion(final Integer expectedVersion, final Integer actualVersion) {
 		if (expectedVersion == null) {
-			return;
+			throw new RequestValidationException("Version cannot be null");
 		}
 		if (!expectedVersion.equals(actualVersion)) {
-			throw new OutdatedVersionException("Version " + actualVersion + " does not match expected version " + expectedVersion);
+			throw new OutdatedVersionException(
+				"Version " + expectedVersion + " does not match the current entity version " + actualVersion);
 		}
 	}
 }

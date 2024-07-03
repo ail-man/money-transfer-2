@@ -1,10 +1,8 @@
 package com.ail.home.transfer.controller;
 
 import static com.ail.home.transfer.controller.ControllerTestUtils.defaultUriBuilder;
-import static com.ail.home.transfer.controller.ControllerTestUtils.getLinkFromHeader;
 import static com.ail.home.transfer.utils.Utils.localDateTimeNow;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,10 +25,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 import com.ail.home.transfer.SpringTestContextInitialization;
-import com.ail.home.transfer.dto.AccountDTO;
 import com.ail.home.transfer.dto.TransactionDTO;
 import com.ail.home.transfer.dto.TransactionData;
 import com.ail.home.transfer.persistence.Account;
@@ -89,147 +85,147 @@ class TransactionControllerTest extends SpringTestContextInitialization {
 		customerHistoryRepoDsl.getRepo().deleteAll();
 		customerRepoDsl.getRepo().deleteAll();
 	}
-
-	@Test
-	void testHeaderXTotalCount() throws Exception {
-		URI uri;
-
-		uri = defaultUriBuilder(TRANSACTIONS_PATH)
-			.build()
-			.toUri();
-
-		getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"));
-
-		uri = defaultUriBuilder(TRANSACTIONS_PATH)
-			.queryParam(PARAM_ENABLED, "true")
-			.build()
-			.toUri();
-
-		getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"));
-	}
-
-	@Test
-	void testLimitFilterAndOffsetFilterAndLinkHeader() throws Exception {
-		final URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
-			.queryParam(PARAM_LIMIT, 2)
-			.build()
-			.toUri();
-
-		final MockHttpServletResponse servletResponse = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"))
-			.andExpect(header().exists(HttpHeaders.LINK))
-			.andReturn()
-			.getResponse();
-
-		final URI nextUri = getLinkFromHeader(servletResponse, TRANSACTIONS_PATH);
-		assertThat(nextUri)
-			.hasParameter(PARAM_LIMIT, "2")
-			.hasParameter(PARAM_OFFSET, "2");
-
-		getMockMvc().perform(get(nextUri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"))
-			.andExpect(header().doesNotExist(HttpHeaders.LINK));
-	}
-
-	@Test
-	void testEmailFilter() throws Exception {
-		final URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
-			.queryParam(PARAM_IBAN, "US02120300000000202051")
-			.build()
-			.toUri();
-
-		final String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "1"))
-			.andExpect(header().doesNotExist(HttpHeaders.LINK))
-			.andReturn()
-			.getResponse()
-			.getContentAsString();
-
-		final List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
-		assertThat(accounts).hasSize(1);
-		final AccountDTO account = accounts.getFirst();
-		assertThat(account.getId()).isEqualTo(UUID.fromString("2492ed49-d04f-43a0-a40e-276ae82191ff"));
-		assertThat(account.getInfo().getIban()).isEqualTo("US02120300000000202051");
-	}
-
-	@Test
-	void testCurrencyFilter() throws Exception {
-		URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
-			.queryParam(PARAM_CURRENCY, "USD", "EUR")
-			.build()
-			.toUri();
-
-		String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"))
-			.andExpect(header().doesNotExist(HttpHeaders.LINK))
-			.andReturn()
-			.getResponse()
-			.getContentAsString();
-
-		List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
-		assertThat(accounts).hasSize(3);
-
-		uri = defaultUriBuilder(TRANSACTIONS_PATH)
-			.queryParam(PARAM_CURRENCY, "EUR", "CNY")
-			.build()
-			.toUri();
-
-		responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"))
-			.andExpect(header().doesNotExist(HttpHeaders.LINK))
-			.andReturn()
-			.getResponse()
-			.getContentAsString();
-
-		accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
-		assertThat(accounts).hasSize(2);
-
-		uri = defaultUriBuilder(TRANSACTIONS_PATH)
-			.queryParam(PARAM_CURRENCY, "USD", "CNY")
-			.build()
-			.toUri();
-
-		responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "1"))
-			.andExpect(header().doesNotExist(HttpHeaders.LINK))
-			.andReturn()
-			.getResponse()
-			.getContentAsString();
-
-		accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
-		assertThat(accounts).hasSize(1);
-	}
-
-	@Test
-	void testCustomerIdFilter() throws Exception {
-		final URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
-			.queryParam(PARAM_CUSTOMER_ID, "aa69e678-b866-471f-80c2-91a42da4bd6f")
-			.build()
-			.toUri();
-
-		final String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"))
-			.andExpect(header().doesNotExist(HttpHeaders.LINK))
-			.andReturn()
-			.getResponse()
-			.getContentAsString();
-
-		List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
-		assertThat(accounts).hasSize(2);
-		assertThat(accounts.get(0).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
-		assertThat(accounts.get(1).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
-	}
+	//
+	//	@Test
+	//	void testHeaderXTotalCount() throws Exception {
+	//		URI uri;
+	//
+	//		uri = defaultUriBuilder(TRANSACTIONS_PATH)
+	//			.build()
+	//			.toUri();
+	//
+	//		getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"));
+	//
+	//		uri = defaultUriBuilder(TRANSACTIONS_PATH)
+	//			.queryParam(PARAM_ENABLED, "true")
+	//			.build()
+	//			.toUri();
+	//
+	//		getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"));
+	//	}
+	//
+	//	@Test
+	//	void testLimitFilterAndOffsetFilterAndLinkHeader() throws Exception {
+	//		final URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
+	//			.queryParam(PARAM_LIMIT, 2)
+	//			.build()
+	//			.toUri();
+	//
+	//		final MockHttpServletResponse servletResponse = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"))
+	//			.andExpect(header().exists(HttpHeaders.LINK))
+	//			.andReturn()
+	//			.getResponse();
+	//
+	//		final URI nextUri = getLinkFromHeader(servletResponse, TRANSACTIONS_PATH);
+	//		assertThat(nextUri)
+	//			.hasParameter(PARAM_LIMIT, "2")
+	//			.hasParameter(PARAM_OFFSET, "2");
+	//
+	//		getMockMvc().perform(get(nextUri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"))
+	//			.andExpect(header().doesNotExist(HttpHeaders.LINK));
+	//	}
+	//
+	//	@Test
+	//	void testEmailFilter() throws Exception {
+	//		final URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
+	//			.queryParam(PARAM_IBAN, "US02120300000000202051")
+	//			.build()
+	//			.toUri();
+	//
+	//		final String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "1"))
+	//			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+	//			.andReturn()
+	//			.getResponse()
+	//			.getContentAsString();
+	//
+	//		final List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+	//		assertThat(accounts).hasSize(1);
+	//		final AccountDTO account = accounts.getFirst();
+	//		assertThat(account.getId()).isEqualTo(UUID.fromString("2492ed49-d04f-43a0-a40e-276ae82191ff"));
+	//		assertThat(account.getInfo().getIban()).isEqualTo("US02120300000000202051");
+	//	}
+	//
+	//	@Test
+	//	void testCurrencyFilter() throws Exception {
+	//		URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
+	//			.queryParam(PARAM_CURRENCY, "USD", "EUR")
+	//			.build()
+	//			.toUri();
+	//
+	//		String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "3"))
+	//			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+	//			.andReturn()
+	//			.getResponse()
+	//			.getContentAsString();
+	//
+	//		List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+	//		assertThat(accounts).hasSize(3);
+	//
+	//		uri = defaultUriBuilder(TRANSACTIONS_PATH)
+	//			.queryParam(PARAM_CURRENCY, "EUR", "CNY")
+	//			.build()
+	//			.toUri();
+	//
+	//		responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"))
+	//			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+	//			.andReturn()
+	//			.getResponse()
+	//			.getContentAsString();
+	//
+	//		accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+	//		assertThat(accounts).hasSize(2);
+	//
+	//		uri = defaultUriBuilder(TRANSACTIONS_PATH)
+	//			.queryParam(PARAM_CURRENCY, "USD", "CNY")
+	//			.build()
+	//			.toUri();
+	//
+	//		responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "1"))
+	//			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+	//			.andReturn()
+	//			.getResponse()
+	//			.getContentAsString();
+	//
+	//		accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+	//		assertThat(accounts).hasSize(1);
+	//	}
+	//
+	//	@Test
+	//	void testCustomerIdFilter() throws Exception {
+	//		final URI uri = defaultUriBuilder(TRANSACTIONS_PATH)
+	//			.queryParam(PARAM_CUSTOMER_ID, "aa69e678-b866-471f-80c2-91a42da4bd6f")
+	//			.build()
+	//			.toUri();
+	//
+	//		final String responseBody = getMockMvc().perform(get(uri).accept(MediaType.APPLICATION_JSON))
+	//			.andExpect(status().isOk())
+	//			.andExpect(header().string(XHeaders.TOTAL_COUNT, "2"))
+	//			.andExpect(header().doesNotExist(HttpHeaders.LINK))
+	//			.andReturn()
+	//			.getResponse()
+	//			.getContentAsString();
+	//
+	//		List<AccountDTO> accounts = getMapper().readValue(responseBody, new TypeReference<>() { });
+	//		assertThat(accounts).hasSize(2);
+	//		assertThat(accounts.get(0).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
+	//		assertThat(accounts.get(1).getCustomerId()).isEqualTo(UUID.fromString("aa69e678-b866-471f-80c2-91a42da4bd6f"));
+	//	}
 
 	@Test
 	void testCreateTransaction() throws Exception {

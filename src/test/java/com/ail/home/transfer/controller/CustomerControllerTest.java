@@ -212,12 +212,13 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 
 		customerInfo = CustomerInfo.builder()
 			.email("test-updated@ail-man.com")
-			.phone("0987654321")
+			.phone(null)
 			.firstName("Sofia")
 			.lastName("Chandler")
 			.build();
 		customerData = CustomerData.builder()
 			.id(customer.getId())
+			.version(0)
 			.enabled(true)
 			.info(customerInfo)
 			.build();
@@ -240,7 +241,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 		actualCustomerInfo = customer.getInfo();
 		assertThat(actualCustomerInfo).isNotNull();
 		assertThat(actualCustomerInfo.getEmail()).isEqualTo(customerInfo.getEmail());
-		assertThat(actualCustomerInfo.getPhone()).isEqualTo(customerInfo.getPhone());
+		assertThat(actualCustomerInfo.getPhone()).isNull();
 		assertThat(actualCustomerInfo.getFirstName()).isEqualTo(customerInfo.getFirstName());
 		assertThat(actualCustomerInfo.getLastName()).isEqualTo(customerInfo.getLastName());
 	}

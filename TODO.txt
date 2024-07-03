@@ -1,6 +1,5 @@
 - Update Account API (customerId, enabled, expiresAt, info)
 - Test corner case with version outdated exception for update customer/account
-- Test deep copy of non-null properties in BeanUtilsTest
 - Search Transaction API
 - Transfer an Account to another Customer (update)
 - Docker Compose with PostgreSQL

@@ -17,7 +17,7 @@ public interface AccountRepo extends JpaRepository<Account, UUID> {
 
 	default Account findLockedByIdOrFail(final UUID id) throws EntityNotFoundException {
 		return this.findLockedById(id)
-			.orElseThrow(() -> EntityNotFoundException.accountIdNotFound(id.toString()));
+			.orElseThrow(() -> EntityNotFoundException.accountIdNotFound(id));
 	}
 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)

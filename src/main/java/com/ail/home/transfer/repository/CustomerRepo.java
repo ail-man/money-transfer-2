@@ -17,7 +17,7 @@ public interface CustomerRepo extends JpaRepository<Customer, UUID> {
 
 	default Customer findLockedByIdOrFail(final UUID id) throws EntityNotFoundException {
 		return this.findLockedById(id)
-			.orElseThrow(() -> EntityNotFoundException.customerIdNotFound(id.toString()));
+			.orElseThrow(() -> EntityNotFoundException.customerIdNotFound(id));
 	}
 
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
