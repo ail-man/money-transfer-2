@@ -9,12 +9,12 @@
 BEGIN;
 CREATE TABLE "accounts"
 (
-  "id"          UUID                  NOT NULL,
-  "customer_id" UUID                  NOT NULL,
-  "version"     INTEGER DEFAULT 0     NOT NULL,
-  "enabled"     BOOLEAN DEFAULT FALSE NOT NULL,
-  "balance"     NUMERIC DEFAULT 0     NOT NULL,
-  "currency"    CHAR(3)               NOT NULL,
+  "id"          UUID                        NOT NULL,
+  "customer_id" UUID                        NOT NULL,
+  "version"     INTEGER DEFAULT 0           NOT NULL,
+  "enabled"     BOOLEAN DEFAULT FALSE       NOT NULL,
+  "balance"     NUMERIC DEFAULT 0           NOT NULL,
+  "currency"    CHAR(3)                     NOT NULL,
   "info"        JSONB,
   "created_at"  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   "updated_at"  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
@@ -29,12 +29,12 @@ COMMIT;
 BEGIN;
 CREATE TABLE "accounts_history"
 (
-  "id"          UUID                  NOT NULL,
-  "customer_id" UUID                  NOT NULL,
-  "version"     INTEGER DEFAULT 0     NOT NULL,
-  "enabled"     BOOLEAN DEFAULT FALSE NOT NULL,
-  "balance"     NUMERIC DEFAULT 0     NOT NULL,
-  "currency"    CHAR(3)               NOT NULL,
+  "id"          UUID                        NOT NULL,
+  "customer_id" UUID                        NOT NULL,
+  "version"     INTEGER DEFAULT 0           NOT NULL,
+  "enabled"     BOOLEAN DEFAULT FALSE       NOT NULL,
+  "balance"     NUMERIC DEFAULT 0           NOT NULL,
+  "currency"    CHAR(3)                     NOT NULL,
   "info"        JSONB,
   "created_at"  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   "updated_at"  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
