@@ -1,5 +1,7 @@
 - Update Account API (customerId, enabled, expiresAt, info)
 - Test corner case with version outdated exception for update customer/account
 - Search Transaction API
-- Transfer an Account to another Customer (update)
+- AccountCreateRequest/AccountCreateResponse, AccountUpdateRequest/AccountUpdateResponse
+- CustomerCreateRequest/CustomerCreateResponse, CustomerUpdateRequest/CustomerUpdateResponse
+- TransactionCreateRequest/TransactionCreateResponse
 - Docker Compose with PostgreSQL

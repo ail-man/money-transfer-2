@@ -186,8 +186,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 		// CREATE
 
 		String responseBody =
-			getMockMvc().perform(post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-					.content(json))
+			getMockMvc().perform(post(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json))
 				.andExpect(status().isCreated())
 				.andExpect(header().exists(HttpHeaders.LOCATION))
 				.andReturn()
@@ -225,8 +224,7 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 		json = getJsonSerializationService().toJson(customerData);
 
 		responseBody =
-			getMockMvc().perform(put(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-					.content(json))
+			getMockMvc().perform(put(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(json))
 				.andExpect(status().isOk())
 				.andReturn()
 				.getResponse()

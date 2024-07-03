@@ -34,7 +34,7 @@
 		<liquibase-core.version>4.26.0</liquibase-core.version>
 		<querydsl.version>5.1.0</querydsl.version>
 		<querydsl.plugin.version>1.1.3</querydsl.plugin.version>
-		<io.hypersistence.version>3.7.5</io.hypersistence.version>
+		<io.hypersistence.version>3.7.7</io.hypersistence.version>
 		<io.grpc.version>1.62.2</io.grpc.version>
 		<proto-google-common-protos.version>2.36.0</proto-google-common-protos.version>
 		<protobuf-spi-impl.version>1.44</protobuf-spi-impl.version>
@@ -43,7 +43,7 @@
 		<microsoft-graph.version>5.15.0</microsoft-graph.version>
 		<azure-identity.version>1.11.3</azure-identity.version>
 		<org.apache.poi.version>5.2.5</org.apache.poi.version>
-		<commons-validator.version>1.8.0</commons-validator.version>
+		<commons-validator.version>1.9.0</commons-validator.version>
 		<org.apache.commons-compress.version>1.26.1</org.apache.commons-compress.version>
 		<org.apache.commons-beanutils-core.version>1.8.3</org.apache.commons-beanutils-core.version>
 		<sentry.version>7.5.0</sentry.version>
@@ -54,6 +54,26 @@
 		<test-framework-util.version>1.123.0</test-framework-util.version>
 		<postgres-test-containers-version>1.19.8</postgres-test-containers-version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>maven_central</id>
+			<name>Maven Central</name>
+			<url>https://repo.maven.apache.org/maven2/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<!-- Spring Boot Starters -->

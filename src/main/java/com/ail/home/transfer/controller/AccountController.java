@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,13 +52,24 @@ public class AccountController {
 	@PostMapping
 	public ResponseEntity<AccountDTO> createAccount(@RequestBody @Valid final AccountData accountData) {
 		final String requestJson = jsonSerializationService.toJson(accountData);
-		log.debug("Create a new customer account request: {}", requestJson);
+		log.debug("Create account request: {}", requestJson);
 		final AccountDTO result = accountService.createAccount(accountData);
 		final URI location = createLocationHeader(result.getId());
-		log.debug("Create a new customer account location: {}", location);
+		log.debug("Create account location: {}", location);
 		final ResponseEntity<AccountDTO> response = ResponseEntity.created(location)
 			.body(result);
-		log.debug("Create a new customer account response: {}", response);
+		log.debug("Create account response: {}", response);
+		return response;
+	}
+
+	@PutMapping
+	public ResponseEntity<AccountDTO> updateAccount(@RequestBody @Valid final AccountData accountData) {
+		final String requestJson = jsonSerializationService.toJson(accountData);
+		log.debug("Update account request: {}", requestJson);
+		final AccountDTO result = accountService.updateAccount(accountData);
+		final ResponseEntity<AccountDTO> response = ResponseEntity.ok()
+			.body(result);
+		log.debug("Update account response: {}", response);
 		return response;
 	}
 }

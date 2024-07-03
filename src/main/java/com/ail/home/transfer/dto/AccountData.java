@@ -1,6 +1,5 @@
 package com.ail.home.transfer.dto;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -30,9 +29,6 @@ public class AccountData {
 	private UUID customerId;
 	@NotNull
 	private Boolean enabled;
-	@NotNull
-	private BigInteger balance;
-	@NotNull
 	private String currency;
 	@Valid
 	private AccountInfo info;

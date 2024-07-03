@@ -2,6 +2,8 @@ package com.ail.home.transfer.mapper;
 
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
@@ -18,4 +20,7 @@ public interface AccountMapper extends BaseMapper {
 	AccountDTO map(Account source);
 
 	Account map(AccountData source);
+
+	@Mapping(target = "currency", ignore = true)
+	void map(AccountData source, @MappingTarget Account target);
 }

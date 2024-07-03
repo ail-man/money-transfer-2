@@ -1,7 +1,9 @@
 package com.ail.home.transfer.service;
 
 import static com.ail.home.transfer.utils.Utils.localDateTimeNow;
+import static com.ail.home.transfer.utils.ValidationUtils.validateEntityVersion;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +41,7 @@ public class AccountService {
 	public AccountDTO createAccount(final AccountData accountData) {
 		final Account account = accountMapper.map(accountData);
 		account.setVersion(0);
+		account.setBalance(new BigDecimal(0));
 		if (account.getId() == null) {
 			account.setId(UUID.randomUUID());
 		}
@@ -47,5 +50,15 @@ public class AccountService {
 		account.setUpdatedAt(timestamp);
 		final Account createdAccount = accountRepoDsl.getRepo().saveAndFlush(account);
 		return accountMapper.map(createdAccount);
+	}
+
+	@Transactional
+	public AccountDTO updateAccount(final AccountData accountData) {
+		Account account = accountRepoDsl.getRepo().findLockedByIdOrFail(accountData.getId());
+		validateEntityVersion(accountData.getVersion(), account.getVersion());
+		accountMapper.map(accountData, account);
+		account.setUpdatedAt(localDateTimeNow());
+		final Account updatedAccount = accountRepoDsl.getRepo().saveAndFlush(account);
+		return accountMapper.map(updatedAccount);
 	}
 }
