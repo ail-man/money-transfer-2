@@ -248,7 +248,6 @@ class AccountControllerTest extends SpringTestContextInitialization {
 					.content(json))
 				.andExpect(status().isCreated())
 				.andExpect(header().exists(HttpHeaders.LOCATION))
-				.andExpect(header().string(XHeaders.ENTITY_VERSION, "0"))
 				.andReturn()
 				.getResponse()
 				.getContentAsString();

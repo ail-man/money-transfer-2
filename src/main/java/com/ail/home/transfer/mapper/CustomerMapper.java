@@ -18,6 +18,8 @@ public interface CustomerMapper extends BaseMapper {
 
 	CustomerDTO map(Customer source);
 
+	@Mapping(target = "id", source = "source.id")
+	@Mapping(target = "version", source = "source.version")
 	@Mapping(target = "enabled", source = "source.enabled")
 	@Mapping(target = "info.email", source = "source.info.email")
 	@Mapping(target = "info.phone", source = "source.info.phone")

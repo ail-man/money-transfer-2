@@ -190,7 +190,6 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 					.content(json))
 				.andExpect(status().isCreated())
 				.andExpect(header().exists(HttpHeaders.LOCATION))
-				.andExpect(header().string(XHeaders.ENTITY_VERSION, "0"))
 				.andReturn()
 				.getResponse()
 				.getContentAsString();
@@ -218,19 +217,16 @@ class CustomerControllerTest extends SpringTestContextInitialization {
 			.lastName("Chandler")
 			.build();
 		customerData = CustomerData.builder()
+			.id(customer.getId())
 			.enabled(true)
 			.info(customerInfo)
 			.build();
 		json = getJsonSerializationService().toJson(customerData);
 
-		final String url = String.join("/", CUSTOMERS_PATH, customer.getId().toString());
-
 		responseBody =
-			getMockMvc().perform(put(url).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
-					.header(XHeaders.ENTITY_VERSION, 0)
+			getMockMvc().perform(put(uri).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
 					.content(json))
 				.andExpect(status().isOk())
-				.andExpect(header().string(XHeaders.ENTITY_VERSION, "1"))
 				.andReturn()
 				.getResponse()
 				.getContentAsString();

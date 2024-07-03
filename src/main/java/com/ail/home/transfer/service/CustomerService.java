@@ -40,7 +40,10 @@ public class CustomerService {
 	@Transactional
 	public CustomerDTO createCustomer(final CustomerData customerData) {
 		final Customer customer = customerMapper.map(customerData);
-		customer.setId(UUID.randomUUID());
+		customer.setVersion(0);
+		if (customer.getId() == null) {
+			customer.setId(UUID.randomUUID());
+		}
 		final LocalDateTime timestamp = localDateTimeNow();
 		customer.setCreatedAt(timestamp);
 		customer.setUpdatedAt(timestamp);
@@ -49,9 +52,9 @@ public class CustomerService {
 	}
 
 	@Transactional
-	public CustomerDTO updateCustomer(final UUID customerId, final Integer customerVersion, final CustomerData customerData) {
-		final Customer customer = customerRepoDsl.getRepo().findLockedByIdOrFail(customerId);
-		validateEntityVersion(customer.getVersion(), customerVersion);
+	public CustomerDTO updateCustomer(final CustomerData customerData) {
+		final Customer customer = customerRepoDsl.getRepo().findLockedByIdOrFail(customerData.getId());
+		validateEntityVersion(customer.getVersion(), customerData.getVersion());
 		customer.setUpdatedAt(localDateTimeNow());
 		BeanUtils.copyNonNullProperties(customerData, customer);
 		final Customer updatedCustomer = customerRepoDsl.getRepo().saveAndFlush(customer);

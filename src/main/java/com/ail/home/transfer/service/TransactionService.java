@@ -31,7 +31,9 @@ public class TransactionService {
 	@Transactional
 	public TransactionDTO createTransaction(final TransactionData transactionData) {
 		final Transaction transaction = transactionMapper.map(transactionData);
-		transaction.setId(UUID.randomUUID());
+		if (transaction.getId() == null) {
+			transaction.setId(UUID.randomUUID());
+		}
 		final LocalDateTime timestamp = localDateTimeNow();
 		transaction.setTimestamp(timestamp);
 
@@ -39,10 +41,10 @@ public class TransactionService {
 		final Account toAccount = accountRepoDsl.getRepo().findLockedByIdOrFail(transaction.getToAccountId());
 
 		final String transactionCurrency = transaction.getCurrency();
-		final String fromCurrency = fromAccount.getCurrency();
-		final String toCurrency = toAccount.getCurrency();
+		final String fromAccountCurrency = fromAccount.getCurrency();
+		final String toAccountCurrency = toAccount.getCurrency();
 
-		if (!isAllCurrenciesAreTheSame(transactionCurrency, fromCurrency, toCurrency)) {
+		if (!isAllCurrenciesAreTheSame(transactionCurrency, fromAccountCurrency, toAccountCurrency)) {
 			throw new InvalidStateException("Currency conversion is not yet implemented");
 		}
 
@@ -67,8 +69,8 @@ public class TransactionService {
 		return transactionMapper.map(createdTransaction);
 	}
 
-	private static boolean isAllCurrenciesAreTheSame(final String transactionCurrency, final String fromCurrency,
-		final String toCurrency) {
-		return transactionCurrency.equals(fromCurrency) && transactionCurrency.equals(toCurrency);
+	private static boolean isAllCurrenciesAreTheSame(final String transactionCurrency, final String fromAccountCurrency,
+		final String toAccountCurrency) {
+		return transactionCurrency.equals(fromAccountCurrency) && transactionCurrency.equals(toAccountCurrency);
 	}
 }

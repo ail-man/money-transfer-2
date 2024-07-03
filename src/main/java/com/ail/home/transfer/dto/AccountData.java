@@ -23,6 +23,8 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AccountData {
 
+	private UUID id;
+	private Integer version;
 	private UUID customerId;
 	private Boolean enabled;
 	private BigInteger balance;

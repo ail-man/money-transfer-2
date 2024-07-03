@@ -38,7 +38,10 @@ public class AccountService {
 	@Transactional
 	public AccountDTO createAccount(final AccountData accountData) {
 		final Account account = accountMapper.map(accountData);
-		account.setId(UUID.randomUUID());
+		account.setVersion(0);
+		if (account.getId() == null) {
+			account.setId(UUID.randomUUID());
+		}
 		final LocalDateTime timestamp = localDateTimeNow();
 		account.setCreatedAt(timestamp);
 		account.setUpdatedAt(timestamp);

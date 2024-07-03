@@ -1,5 +1,7 @@
 package com.ail.home.transfer.dto;
 
+import java.util.UUID;
+
 import com.ail.home.transfer.persistence.CustomerInfo;
 
 import jakarta.validation.Valid;
@@ -19,6 +21,8 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CustomerData {
 
+	private UUID id;
+	private Integer version;
 	private Boolean enabled;
 	@Valid
 	private CustomerInfo info;

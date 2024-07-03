@@ -21,6 +21,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionData {
 
+	private UUID id;
 	private BigDecimal amount;
 	private String currency;
 	private UUID fromAccountId;

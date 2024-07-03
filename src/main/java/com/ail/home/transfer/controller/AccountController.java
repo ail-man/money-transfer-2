@@ -56,7 +56,6 @@ public class AccountController {
 		final URI location = createLocationHeader(result.getId());
 		log.debug("Create a new customer account location: {}", location);
 		final ResponseEntity<AccountDTO> response = ResponseEntity.created(location)
-			.header(XHeaders.ENTITY_VERSION, String.valueOf(result.getVersion()))
 			.body(result);
 		log.debug("Create a new customer account response: {}", response);
 		return response;
