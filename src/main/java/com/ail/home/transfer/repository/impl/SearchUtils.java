@@ -88,6 +88,14 @@ public final class SearchUtils {
 		return predicate;
 	}
 
+	public static BooleanBuilder applyJsonbFieldValueContainsFilter(final BooleanBuilder predicate, final Path<?> jsonbPath,
+		final String searchKey, final String value) {
+		if (StringUtils.isNotBlank(value)) {
+			return predicate.and(buildJsonbFieldContainsExpression(jsonbPath, searchKey, value));
+		}
+		return predicate;
+	}
+
 	public static BooleanBuilder applyJsonbFieldValueInCollectionFilter(final BooleanBuilder predicate, final Path<?> jsonbPath,
 		final String searchKey, final List<String> value) {
 		if (CollectionUtils.isNotEmpty(value)) {
@@ -103,6 +111,12 @@ public final class SearchUtils {
 	}
 
 	// TODO check SQL injections
+	public static BooleanTemplate buildJsonbFieldContainsExpression(final Path<?> jsonbPath, final String searchKey, final String value) {
+		final String[] jsonKeys = searchKey.split("\\.");
+		return Expressions.booleanTemplate("jsonb_path_contains_func({0}, {1}, {2})", jsonbPath, jsonKeys, value);
+	}
+
+	// TODO check SQL injections
 	public static BooleanTemplate buildJsonbFieldInCollectionExpression(final Path<?> jsonbPath, final String searchKey,
 		final List<String> value) {
 		final String[] jsonKeys = searchKey.split("\\.");
@@ -112,7 +126,7 @@ public final class SearchUtils {
 	}
 
 	public static BooleanBuilder applyAmountFilter(final BooleanBuilder predicate,
-		final BigDecimal amountFrom, final BigDecimal amountTo, final NumberPath<BigDecimal> amountPath) {
+		final NumberPath<BigDecimal> amountPath, final BigDecimal amountFrom, final BigDecimal amountTo) {
 		if (amountFrom != null && amountTo != null) {
 			return predicate.and(amountPath.between(amountFrom, amountTo));
 		}

@@ -8,6 +8,7 @@ import static com.ail.home.transfer.repository.impl.SearchUtils.applyInStringCol
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFieldValueEqualsFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getFieldName;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getOrder;
+import static com.ail.home.transfer.utils.SearchUtils.DEFAULT_LIMIT;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -31,10 +32,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AccountRepoDsl {
 
-	public static final long DEFAULT_LIMIT = 20;
 	public static final String CREATED_AT = "createdAt";
 	public static final String ACCOUNT_INFO_IBAN = "iban";
-	public static final String ACCOUNT_INFO_CURRENCY = "currency";
 
 	private final JPAQueryFactory queryFactory;
 

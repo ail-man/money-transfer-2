@@ -4,11 +4,13 @@ import static com.ail.home.transfer.utils.Utils.localDateTimeNow;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ail.home.transfer.dto.TransactionCriteria;
 import com.ail.home.transfer.dto.TransactionDTO;
 import com.ail.home.transfer.dto.TransactionData;
 import com.ail.home.transfer.exceptions.InvalidStateException;
@@ -72,5 +74,15 @@ public class TransactionService {
 	private static boolean isAllCurrenciesAreTheSame(final String transactionCurrency, final String fromAccountCurrency,
 		final String toAccountCurrency) {
 		return transactionCurrency.equals(fromAccountCurrency) && transactionCurrency.equals(toAccountCurrency);
+	}
+
+	public Long countTransactions(final TransactionCriteria transactionCriteria) {
+		return transactionRepoDsl.countTransactions(transactionCriteria);
+	}
+
+	public List<TransactionDTO> searchTransactions(final TransactionCriteria transactionCriteria) {
+		return transactionRepoDsl.searchTransactions(transactionCriteria)
+			.map(transactionMapper::map)
+			.toList();
 	}
 }

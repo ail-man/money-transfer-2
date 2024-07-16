@@ -7,6 +7,7 @@ import static com.ail.home.transfer.repository.impl.SearchUtils.applyIdFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.applyJsonbFieldValueInCollectionFilter;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getFieldName;
 import static com.ail.home.transfer.repository.impl.SearchUtils.getOrder;
+import static com.ail.home.transfer.utils.SearchUtils.DEFAULT_LIMIT;
 
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -30,7 +31,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CustomerRepoDsl {
 
-	public static final long DEFAULT_LIMIT = 20;
 	public static final String CREATED_AT = "createdAt";
 	public static final String CUSTOMER_INFO_EMAIL = "email";
 

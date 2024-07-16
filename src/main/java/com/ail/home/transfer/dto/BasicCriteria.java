@@ -18,10 +18,6 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BasicCriteria extends PageCriteria {
 
-	public static final long DEFAULT_LIMIT = 20;
-
-	// Searchable data
-
 	private UUID id; // optional, strict equals
 
 	private Boolean enabled; // optional, strict equals

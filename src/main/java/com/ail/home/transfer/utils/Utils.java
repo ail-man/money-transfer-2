@@ -12,13 +12,11 @@ import java.util.Date;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Common utils.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Slf4j
 public final class Utils {
 
 	public static final ZoneOffset ZONE_OFFSET_UTC = ZoneOffset.UTC;

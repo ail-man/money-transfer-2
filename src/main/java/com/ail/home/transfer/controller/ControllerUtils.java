@@ -1,5 +1,8 @@
 package com.ail.home.transfer.controller;
 
+import static com.ail.home.transfer.utils.SearchUtils.DEFAULT_LIMIT;
+import static com.ail.home.transfer.utils.SearchUtils.DEFAULT_OFFSET;
+
 import java.net.URI;
 import java.util.UUID;
 
@@ -15,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ControllerUtils {
 
-	public static final long DEFAULT_LIMIT = 20;
-
 	public static ServletUriComponentsBuilder logRequestAndGetUriBuilder(final String message) {
 		final ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
 		final String originalUrl = builder.toUriString();
@@ -27,7 +28,7 @@ public final class ControllerUtils {
 	public static void buildNextOffsetLink(final Long total, final Long offset, final Long limit,
 		final ServletUriComponentsBuilder uriBuilder, final ResponseEntity.BodyBuilder responseBuilder) {
 
-		final long actualOffset = offset != null ? offset : 0;
+		final long actualOffset = offset != null ? offset : DEFAULT_OFFSET;
 		final long actualLimit = limit != null ? limit : DEFAULT_LIMIT;
 
 		if (total > actualOffset + actualLimit) {
